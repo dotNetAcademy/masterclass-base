@@ -2,7 +2,7 @@
 
 ## De opdracht
 
-Je kan de opdracht vinden in [Game of Goose Excercise](./GameOfGooseExcercise.pdf.pdf).
+Je kan de opdracht vinden in [Game of Goose Excercise](./GameOfGooseExcercise.pdf).
 
 ## Doel van de opdracht
 

@@ -7,7 +7,6 @@ const persons = [
     birthday: new Date(1991, 5, 27),
     pets: [10, 20],
   },
-
   {
     id: 2,
     firstName: "Alice",
@@ -16,7 +15,6 @@ const persons = [
     birthday: new Date(1995, 10, 8),
     pets: null,
   },
-
   {
     id: 3,
     firstName: "Bob",
@@ -33,13 +31,11 @@ const pets = [
     name: "Bobby",
     type: "dog",
   },
-
   {
     id: 20,
     name: "Mimi",
     type: "cat",
   },
-
   {
     id: 30,
     name: "Aiko",
