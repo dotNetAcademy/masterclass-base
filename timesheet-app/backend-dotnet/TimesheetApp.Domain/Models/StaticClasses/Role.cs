@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+namespace TimesheetApp.Domain.Models.StaticClasses;
 
-namespace TimesheetApp.Domain.Models.StaticClasses
+public static class Role
 {
-    public static class Role
-    {
-        public const string
-            Admin = "Admin",
-            Hr = "Hr",
-            Employee = "Employee";
-    }
+    public const string
+        Admin = "Admin",
+        Hr = "Hr",
+        Employee = "Employee";
 }

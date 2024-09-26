@@ -29,6 +29,10 @@ INSERT INTO Employee (Id, FirstName, LastName, Email, Role) VALUES
 	('1vr60tuzdxmipdqc41u4', 'Sofia', 'Lee', 'sofialee@gmail.com', 'Admin');
 INSERT INTO Employee (Id, FirstName, LastName, Email, Role) VALUES
 	('7rkn2523k5g0tsjwglg1', 'William', 'Chen', 'williamchen@gmail.com', 'HR');
+INSERT INTO Employee (Id, FirstName, LastName, Email, Role, Auth0Id) VALUES
+	('gre15343zergzer', 'Derre', 'Evers', 'derre.evers1@hotmail.com', 'Employee', 'auth0|651a650f7e59ace9af550443');
+INSERT INTO Employee (Id, FirstName, LastName, Email, Role, Auth0Id) VALUES
+	('fzegkfef156fzefe58', 'Evers', 'Derre', 'derre.evers@dotnetlab.eu', 'HR', 'auth0|651aa7c87e59ace9af5541a9');
 
 
 

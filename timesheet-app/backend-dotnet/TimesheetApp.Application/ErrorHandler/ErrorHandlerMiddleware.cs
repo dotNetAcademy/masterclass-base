@@ -1,56 +1,58 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Text.Json;
 using TimesheetApp.Domain.Exceptions;
 
-namespace TimesheetApp.Application.ErrorHandler
+namespace TimesheetApp.Application.ErrorHandler;
+
+public class ErrorHandlerMiddleware
 {
-    public class ErrorHandlerMiddleware
+    private readonly RequestDelegate _next;
+    private readonly ILogger<ErrorHandlerMiddleware> _logger;
+
+    public ErrorHandlerMiddleware(RequestDelegate next, ILogger<ErrorHandlerMiddleware> logger)
     {
-        private readonly RequestDelegate _next;
-        private readonly ILogger<ErrorHandlerMiddleware> _logger;
+        _next = next;
+        _logger = logger;
+    }
 
-        public ErrorHandlerMiddleware(RequestDelegate next, ILogger<ErrorHandlerMiddleware> logger)
+    public async Task Invoke(HttpContext context)
+    {
+        try
         {
-            _next = next;
-            _logger = logger;
+            await _next(context);
         }
-
-        public async Task Invoke(HttpContext context)
+        catch (Exception error)
         {
-            try
-            {
-                await _next(context);
-            }
-            catch (Exception error)
-            {
-                var response = context.Response;
-                response.ContentType = "application/json";
+            var response = context.Response;
+            response.ContentType = "application/json";
 
-                switch (error)
-                {
-                    case AppException e:
-                        response.StatusCode = (int)HttpStatusCode.BadRequest;
-                        _logger.LogError(e.ToString());
-                        break;
-                    case KeyNotFoundException e:
-                        response.StatusCode = (int)HttpStatusCode.NotFound;
-                        _logger.LogInformation(e.ToString());
-                        break;
-                    case UnauthorizedAccessException e:
-                        response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                        _logger.LogInformation(e.ToString());
-                        break;
-                    default:
-                        response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                        _logger.LogError(error.ToString());
-                        break;
-                }
+            switch (error)
+            {
+                case AppException e:
+                    response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    _logger.LogError(e.ToString());
+                    break;
 
-                var result = JsonSerializer.Serialize(new { message = error?.Message });
-                await response.WriteAsync(result);
+                case KeyNotFoundException e:
+                    response.StatusCode = (int)HttpStatusCode.NotFound;
+                    _logger.LogInformation(e.ToString());
+                    break;
+
+                case UnauthorizedAccessException e:
+                    response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    _logger.LogInformation(e.ToString());
+                    break;
+
+                default:
+                    response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    _logger.LogError(error.ToString());
+                    break;
             }
+
+            var result = JsonSerializer.Serialize(new { message = error?.Message });
+            await response.WriteAsync(result);
         }
     }
 }

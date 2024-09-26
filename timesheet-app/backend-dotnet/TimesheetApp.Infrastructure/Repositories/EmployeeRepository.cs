@@ -1,103 +1,82 @@
-﻿using Dapper;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using PronostiekApp.Infrastructure;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TimesheetApp.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using TimesheetApp.Domain.Interfaces.Repositories;
 using TimesheetApp.Domain.Models;
-using TimesheetApp.Domain.Models.ValueObjects;
 
-namespace TimesheetApp.Infrastructure.Repositories
+namespace TimesheetApp.Infrastructure.Repositories;
+
+public class EmployeeRepository : IEmployeeRepository
 {
-    public class EmployeeRepository : IEmployeeRepository
+    private readonly AppDbContext _context;
+
+    public EmployeeRepository(AppDbContext context)
     {
-        private const string EMPLOYEE_COMPLETE_QUERY = @"
-                    SELECT e.*, t.*, r.* 
-                    FROM Employee e
-                    LEFT JOIN Timesheet t on t.EmployeeId = e.Id
-                    LEFT JOIN Registration r on r.TimesheetId = t.Id ";
+        _context = context;
+    }
 
-        private readonly IDbConnection _connection;
-        private readonly AppDbContext _context;
+    public async Task<IEnumerable<Employee>> GetAll()
+    {
+        var result = await _context.Employees.Include(e => e.Timesheets).ThenInclude(t => t.Registrations).ToListAsync();
 
-        public EmployeeRepository(IConfiguration configuration, AppDbContext context)
+        return GroupEmployees(result);
+    }
+
+    public async Task<Employee?> GetById(string id)
+    {
+        var result = await _context.Employees.Where(e => e.Id == id)
+            .Include(e => e.Timesheets)
+            .ThenInclude(t => t.Registrations)
+            .ToListAsync();
+
+
+        return GroupEmployees(result).SingleOrDefault();
+    }
+
+    private static IEnumerable<Employee> GroupEmployees(IEnumerable<Employee> result)
+    {
+        return result.GroupBy(e => e.Id).Select(e =>
         {
-            _connection = new SqlConnection(configuration.GetConnectionString("defaultconnection"));
-            _context = context;
-        }
-
-        public async Task<IEnumerable<Employee>> GetAll()
-        {
-            string sql = EMPLOYEE_COMPLETE_QUERY;
-
-            var result = await DapperQuery(sql);
-            return GroupEmployees(result);
-        }
-
-        public async Task<Employee?> GetById(string id)
-        {
-            string sql = EMPLOYEE_COMPLETE_QUERY + " WHERE e.Id = @id";
-
-            var result = await DapperQuery(sql, id);
-            return GroupEmployees(result).SingleOrDefault();
-        }
-
-        private async Task<IEnumerable<Employee>> DapperQuery(string sql, string? id = null)
-        {
-            var result = await _connection.QueryAsync<Employee, Timesheet, Registration, TimeSlot, Employee>(sql, (employee, timesheet, registration, timeSlot) =>
+            var employee = e.First();
+            if (e.First().Timesheets.Count > 0)
             {
-                if (timesheet is not null)
-                {
-                    if (registration is not null)
+                var timesheets = e.SelectMany(e => e.Timesheets!).ToList()
+                    .GroupBy(t => t.Id).Select(t =>
                     {
-                        registration.ChangeTimeSlot(timeSlot);
-                        timesheet.AddRegistration(registration);
-                    }
-                    employee.AddTimesheet(timesheet);
-                }
-
-                return employee;
-            }, new { id }, splitOn: "Id, Id, Id, Start");
-
-            return result;
-        }
-
-        private static IEnumerable<Employee> GroupEmployees(IEnumerable<Employee> result)
-        {
-            return result.GroupBy(e => e.Id).Select(e =>
-            {
-                Employee employee = e.First();
-                if (e.First().Timesheets.Count > 0)
-                {
-                    var timesheets = e.SelectMany(e => e.Timesheets!).ToList()
-                        .GroupBy(t => t.Id).Select(t =>
+                        var timesheet = t.First();
+                        if (t.First().Registrations is not null)
                         {
-                            Timesheet timesheet = t.First();
-                            if (t.First().Registrations is not null)
-                            {
-                                var registrations = t.SelectMany(t => t.Registrations).ToList();
-                                timesheet.InitRegistrations(registrations);
-                            }
-                            return timesheet;
-                        }).ToList();
+                            var registrations = t.SelectMany(t => t.Registrations).ToList();
+                            timesheet.InitRegistrations(registrations);
+                        }
+                        return timesheet;
+                    }).ToList();
 
-                    employee.InitTimesheets(timesheets);
+                employee.InitTimesheets(timesheets);
+            }
+            return employee;
+        });
+    }
 
-                }
-                return employee;
-            });
-        }
+    public async Task Update(Employee employee)
+    {
+        _context.Employees.Update(employee);
+        await _context.SaveChangesAsync();
+    }
 
-        public async Task Update(Employee employee)
-        {
-            _context.Employees.Update(employee);
-            await _context.SaveChangesAsync();
-        }
+    public async Task<Employee?> GetByAuth0Id(string auth0Id)
+    {
+        var employee = await _context.Employees.Where(e => e.Auth0Id == auth0Id).FirstOrDefaultAsync();
+
+        return employee;
+    }
+
+    public async Task<IEnumerable<Employee>> GetByName(string name)
+    {
+        var result = await _context.Employees.Where(e => EF.Functions.Like($"{e.FirstName} {e.LastName}", name))
+            .Include(e => e.Timesheets)
+            .ThenInclude(t => t.Registrations)
+            .ToListAsync();
+
+        return GroupEmployees(result);
     }
 }

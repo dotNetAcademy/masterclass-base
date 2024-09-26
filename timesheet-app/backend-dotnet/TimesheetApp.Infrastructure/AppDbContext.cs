@@ -1,24 +1,38 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using TimesheetApp.Domain.Models;
+using TimesheetApp.Infrastructure.MediatorExtension;
 
-namespace PronostiekApp.Infrastructure
+namespace TimesheetApp.Infrastructure;
+
+public class AppDbContext : DbContext
 {
-    public class AppDbContext : DbContext
+    private readonly IMediator _mediator;
+    public AppDbContext(DbContextOptions<AppDbContext> options, IMediator mediator) : base(options)
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-        }
-
-        public DbSet<Employee> Employees { get; set; }
+        _mediator = mediator;
     }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    { }
+
+    public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
+    {
+        await _mediator.DispatchDomainEventsAsync(this);
+        var result = await base.SaveChangesAsync();
+        return true;
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+    }
+
+    public DbSet<Employee> Employees { get; set; }
+    public DbSet<Registration> Registrations { get; set; }
+    public DbSet<Timesheet> Timesheets { get; set; }
+    public DbSet<Holiday> Holidays { get; set; }
+
 }
