@@ -56,11 +56,11 @@ https://marketplace.visualstudio.com/items?itemName=SteveCadwallader.CodeMaid
 Why? As a DotNet Labs developer, you should have at least a passing knowledge of the SOLID principles. These will help to make your code more readable, testable, expandable and more resilient to change.
  
 
-DotNetAcademy SOLID course [https://learn.dotnetacademy.be/index ]
-Tim Corey course on SOLID  [https://www.youtube.com/watch?v=5RwhyZnVRS8&list=PLAaFb7UfyShCoS246UzZJNEiXuD8bg02e&ab_channel=IAmTimCorey]
+DotNetAcademy SOLID course https://learn.dotnetacademy.be/index 
+Tim Corey course on SOLID  https://www.youtube.com/watch?v=5RwhyZnVRS8&list=PLAaFb7UfyShCoS246UzZJNEiXuD8bg02e&ab_channel=IAmTimCorey
 
 Having troubles applying the SOLID guidelines? That's understandable since the concepts may be challenging to newcomers. Also, an existing codebase with differing coding styles might make it hard to implement these abstract concepts.
 
 At the very least, try to implement the Single Responsibility and Dependency Inversion principles by writing short and focused methods that do one thing and do that one thing well. Try splitting up larger methods into smaller, readable, reusable and testable methods. To implement DI, try using Dependency Injection and avoiding the new keyword as much as possible when consuming Services.
 
- [New is glue]([https://ardalis.com/new-is-glue)
+New is glue https://ardalis.com/new-is-glue
