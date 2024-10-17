@@ -1,9 +1,9 @@
 using NSubstitute;
+using TimesheetApp.Application.Interfaces.Repositories;
+using TimesheetApp.Application.Interfaces.Validators;
 using TimesheetApp.Domain.Exceptions;
-using TimesheetApp.Domain.Interfaces.Repositories;
-using TimesheetApp.Domain.Interfaces.Services;
 using TimesheetApp.Domain.Models;
-using TimesheetApp.Domain.Services;
+using TimesheetApp.Domain.Validators;
 
 namespace TimesheetApp.UnitTests;
 
@@ -21,14 +21,14 @@ public class HolidayTests
     {
         var holidays = new List<Holiday>()
         {
-            new (new DateTime(2024, 12, 25), "Christmas", Substitute.For<IValidateHoliday>())
+            new (new DateTime(2024, 12, 25), "Christmas")
         };
 
-        _holidayRepository.GetByDate(default).ReturnsForAnyArgs(holidays);
-        IValidateHoliday validateHoliday = new ValidateHoliday(_holidayRepository);
+        _holidayRepository.GetByDate(default, CancellationToken.None).ReturnsForAnyArgs(holidays);
+        IHolidayValidator validateHoliday = new HolidayValidator();
 
         var exception = Assert.Throws<AppException>(() =>
-            new Holiday(new DateTime(2024, 12, 25), "Test", validateHoliday)
+            new Holiday(new DateTime(2024, 12, 25), "Test")
         );
 
         // Assert

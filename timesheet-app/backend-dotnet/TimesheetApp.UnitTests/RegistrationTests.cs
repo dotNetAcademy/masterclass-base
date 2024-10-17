@@ -1,13 +1,13 @@
 using AutoFixture;
 using NSubstitute;
 using Shouldly;
+using TimesheetApp.Application.Interfaces.Repositories;
+using TimesheetApp.Application.Interfaces.Validators;
 using TimesheetApp.Domain.Exceptions;
-using TimesheetApp.Domain.Interfaces.Repositories;
-using TimesheetApp.Domain.Interfaces.Services;
 using TimesheetApp.Domain.Models;
-using TimesheetApp.Domain.Models.StaticClasses;
+using TimesheetApp.Domain.Models.Enums;
 using TimesheetApp.Domain.Models.ValueObjects;
-using TimesheetApp.Domain.Services;
+using TimesheetApp.Domain.Validators;
 
 namespace TimesheetApp.UnitTests;
 
@@ -23,7 +23,7 @@ public class RegistrationTests
         _fixture = new Fixture();
 
         _fixture.Customize<Employee>(e => e.FromFactory(() => new Employee(
-            _fixture.Create<string>(), _fixture.Create<string>(), _fixture.Create<string>(), _fixture.Create<string>(), _fixture.Create<string>(), _fixture.Create<string>()
+            _fixture.Create<string>(), _fixture.Create<string>(), _fixture.Create<string>(), _fixture.Create<string>(), _fixture.Create<Role>(), _fixture.Create<string>()
         )));
         _fixture.Customize<Timesheet>(t => t.FromFactory(() => new Timesheet(
             2023, rnd.Next(1, 13)
@@ -37,18 +37,18 @@ public class RegistrationTests
     }
 
     [Fact]
-    public async Task AddRegistration_EmployeeExistsAndTimeSheetExists_RegistrationAdded()
+    public void AddRegistration_EmployeeExistsAndTimeSheetExists_RegistrationAdded()
     {
         // Arrange
         var registrations = _fixture.Build<Registration>().CreateMany().ToList();
         var timesheets = _fixture.Build<Timesheet>().CreateMany().ToList();
         var today = DateTime.Now;
-        var validateRegistration = new ValidateRegistration(_holidayRepository);
+        var validateRegistration = new HolidayValidator();
         registrations.ForEach(r =>
         {
             r.ChangeTimeSlot(new TimeSlot(today, today));
             today = today.AddMinutes(1);
-            timesheets.ForEach(async t => await t.AddRegistration(r, validateRegistration));
+            timesheets.ForEach(t => t.AddRegistration(r));
         });
         var employee = _fixture.Build<Employee>().Create();
         employee.InitTimesheets(timesheets);
@@ -63,7 +63,7 @@ public class RegistrationTests
         var registrationCount = employee.Timesheets.Sum(t => t.Registrations.Count);
 
         // Act
-        await employee.AddRegistration(registration, validateRegistration);
+        employee.AddRegistration(registration);
 
         // Assert
         employee.Timesheets.Count.ShouldBe(timesheetCount);
@@ -71,18 +71,18 @@ public class RegistrationTests
     }
 
     [Fact]
-    public async Task AddRegistration_EmployeeExistsAndTimeSheetDoesntExist_RegistrationAndTimesheetAdded()
+    public void AddRegistration_EmployeeExistsAndTimeSheetDoesntExist_RegistrationAndTimesheetAdded()
     {
         // Arrange
         var registrations = _fixture.Build<Registration>().CreateMany().ToList();
         var timesheets = _fixture.Build<Timesheet>().CreateMany().ToList();
         var today = DateTime.Now;
-        IValidateRegistration validateRegistration = new ValidateRegistration(_holidayRepository);
+        IRegistrationValidator validateRegistration = new RegistrationValidator();
         registrations.ForEach(r =>
         {
             r.ChangeTimeSlot(new TimeSlot(today, today));
             today = today.AddMinutes(1);
-            timesheets.ForEach(async t => await t.AddRegistration(r, validateRegistration));
+            timesheets.ForEach(t => t.AddRegistration(r));
         });
         var employee = _fixture.Build<Employee>().Create();
         employee.InitTimesheets(timesheets);
@@ -95,7 +95,7 @@ public class RegistrationTests
         var registrationCount = employee.Timesheets.Sum(t => t.Registrations.Count);
 
         // Act
-        await employee.AddRegistration(registration, validateRegistration);
+        employee.AddRegistration(registration);
 
         // Assert
         employee.Timesheets.Count.ShouldBe(timesheetCount + 1);
@@ -103,18 +103,18 @@ public class RegistrationTests
     }
 
     [Fact]
-    public async Task AddRegistrationWithOverlappingTimeSlot_GiveErrorMessage_ThereIsAnOverlapWithAnotherRegistration()
+    public void AddRegistrationWithOverlappingTimeSlot_GiveErrorMessage_ThereIsAnOverlapWithAnotherRegistration()
     {
         // Arrange
         var registrations = _fixture.Build<Registration>().CreateMany().ToList();
         var timesheets = _fixture.Build<Timesheet>().CreateMany().ToList();
         var today = DateTime.Now;
-        IValidateRegistration validateRegistration = new ValidateRegistration(_holidayRepository);
+        IRegistrationValidator validateRegistration = new RegistrationValidator();
         registrations.ForEach(r =>
         {
             r.ChangeTimeSlot(new TimeSlot(today, today));
             today = today.AddMinutes(1);
-            timesheets.ForEach(async t => await t.AddRegistration(r, validateRegistration));
+            timesheets.ForEach(t => t.AddRegistration(r));
         });
         var employee = _fixture.Build<Employee>().Create();
         employee.InitTimesheets(timesheets);
@@ -131,8 +131,8 @@ public class RegistrationTests
         var timesheet = new Timesheet(reg1.TimeSlot.Start.Year, reg1.TimeSlot.Start.Month);
         employee.AddTimesheet(timesheet);
 
-        await employee.AddRegistration(reg1, validateRegistration);
-        var ex = await Assert.ThrowsAsync<AppException>(() => timesheet.AddRegistration(overlap, validateRegistration));
+        employee.AddRegistration(reg1);
+        var ex = Assert.Throws<AppException>(() => timesheet.AddRegistration(overlap));
         Assert.True(ex.Message == "There is an overlap with another registration");
     }
 
@@ -143,12 +143,12 @@ public class RegistrationTests
         var registrations = _fixture.Build<Registration>().CreateMany().ToList();
         var timesheets = _fixture.Build<Timesheet>().CreateMany().ToList();
         var today = DateTime.Now;
-        IValidateRegistration validateRegistration = new ValidateRegistration(_holidayRepository);
+        IRegistrationValidator validateRegistration = new RegistrationValidator();
         registrations.ForEach(r =>
         {
             r.ChangeTimeSlot(new TimeSlot(today, today));
             today = today.AddMinutes(1);
-            timesheets.ForEach(async t => await t.AddRegistration(r, validateRegistration));
+            timesheets.ForEach(t => t.AddRegistration(r));
         });
         var employee = _fixture.Build<Employee>().Create();
         employee.InitTimesheets(timesheets);
@@ -159,18 +159,18 @@ public class RegistrationTests
     }
 
     [Fact]
-    public async Task AddRegistrationWichExceeds8HourLimitForDay_GiveErrorMessage_YouExceededTheMaximumOf8HoursForThisDay()
+    public void AddRegistrationWichExceeds8HourLimitForDay_GiveErrorMessage_YouExceededTheMaximumOf8HoursForThisDay()
     {
         // Arrange
         var registrations = _fixture.Build<Registration>().CreateMany().ToList();
         var timesheets = _fixture.Build<Timesheet>().CreateMany().ToList();
         var today = DateTime.Now;
-        IValidateRegistration validateRegistration = new ValidateRegistration(_holidayRepository);
+        IRegistrationValidator validateRegistration = new RegistrationValidator();
         registrations.ForEach(r =>
         {
             r.ChangeTimeSlot(new TimeSlot(today, today));
             today = today.AddMinutes(1);
-            timesheets.ForEach(async t => await t.AddRegistration(r, validateRegistration));
+            timesheets.ForEach(t => t.AddRegistration(r));
         });
         var employee = _fixture.Build<Employee>().Create();
         employee.InitTimesheets(timesheets);
@@ -187,24 +187,24 @@ public class RegistrationTests
         var timesheet = new Timesheet(exceed8double.TimeSlot.Start.Year, exceed8double.TimeSlot.Start.Month);
         employee.AddTimesheet(timesheet);
 
-        await employee.AddRegistration(reg1, validateRegistration);
+        employee.AddRegistration(reg1);
         var ex = Assert.Throws<AppException>(() => timesheet.RegistrationExceedsDayLimitOf8Hours(exceed8double.TimeSlot, exceed8double.Id));
         Assert.True(ex.Message == "You exceeded the maximum of 8 hours for this day");
     }
 
     [Fact]
-    public async Task AddRegistrationWichExceeds40HourLimitForWeek_GiveErrorMessage_YouExceededTheMaximumOf40HoursForThisWeek()
+    public void AddRegistrationWichExceeds40HourLimitForWeek_GiveErrorMessage_YouExceededTheMaximumOf40HoursForThisWeek()
     {
         // Arrange
         var registrations = _fixture.Build<Registration>().CreateMany().ToList();
         var timesheets = _fixture.Build<Timesheet>().CreateMany().ToList();
         var today = DateTime.Now;
-        IValidateRegistration validateRegistration = new ValidateRegistration(_holidayRepository);
+        IRegistrationValidator validateRegistration = new RegistrationValidator();
         registrations.ForEach(r =>
         {
             r.ChangeTimeSlot(new TimeSlot(today, today));
             today = today.AddMinutes(1);
-            timesheets.ForEach(async t => await t.AddRegistration(r, validateRegistration));
+            timesheets.ForEach(t => t.AddRegistration(r));
         });
         var employee = _fixture.Build<Employee>().Create();
         employee.InitTimesheets(timesheets);
@@ -237,11 +237,11 @@ public class RegistrationTests
         var timesheet = new Timesheet(reg1.TimeSlot.Start.Year, reg1.TimeSlot.Start.Month);
         employee.AddTimesheet(timesheet);
 
-        await employee.AddRegistration(reg1, validateRegistration);
-        await employee.AddRegistration(exceed401, validateRegistration);
-        await employee.AddRegistration(exceed402, validateRegistration);
-        await employee.AddRegistration(exceed403, validateRegistration);
-        await employee.AddRegistration(exceed404, validateRegistration);
+        employee.AddRegistration(reg1);
+        employee.AddRegistration(exceed401);
+        employee.AddRegistration(exceed402);
+        employee.AddRegistration(exceed403);
+        employee.AddRegistration(exceed404);
         var ex = Assert.Throws<AppException>(() => timesheet.RegistrationExceedsWeekLimitOf40Hours(exceed405.TimeSlot, exceed405.Id));
         Assert.True(ex.Message == "You exceeded the maximum of 40 hours for this week");
     }

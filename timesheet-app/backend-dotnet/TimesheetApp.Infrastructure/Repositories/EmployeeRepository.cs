@@ -1,6 +1,6 @@
 using System.Data;
 using Microsoft.EntityFrameworkCore;
-using TimesheetApp.Domain.Interfaces.Repositories;
+using TimesheetApp.Application.Interfaces.Repositories;
 using TimesheetApp.Domain.Models;
 
 namespace TimesheetApp.Infrastructure.Repositories;
@@ -14,20 +14,21 @@ public class EmployeeRepository : IEmployeeRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<Employee>> GetAll()
+    public async Task<IEnumerable<Employee>> GetAll(CancellationToken cancellationToken)
     {
-        var result = await _context.Employees.Include(e => e.Timesheets).ThenInclude(t => t.Registrations).ToListAsync();
+        var result = await _context.Employees.Include(e => e.Timesheets)
+            .ThenInclude(t => t.Registrations)
+            .ToListAsync(cancellationToken);
 
         return GroupEmployees(result);
     }
 
-    public async Task<Employee?> GetById(string id)
+    public async Task<Employee?> GetById(string id, CancellationToken cancellationToken)
     {
         var result = await _context.Employees.Where(e => e.Id == id)
             .Include(e => e.Timesheets)
             .ThenInclude(t => t.Registrations)
-            .ToListAsync();
-
+            .ToListAsync(cancellationToken);
 
         return GroupEmployees(result).SingleOrDefault();
     }
@@ -57,25 +58,23 @@ public class EmployeeRepository : IEmployeeRepository
         });
     }
 
-    public async Task Update(Employee employee)
+    public async Task Update(Employee employee, CancellationToken cancellationToken)
     {
         _context.Employees.Update(employee);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<Employee?> GetByAuth0Id(string auth0Id)
+    public async Task<Employee?> GetByAuth0Id(string auth0Id, CancellationToken cancellationToken)
     {
-        var employee = await _context.Employees.Where(e => e.Auth0Id == auth0Id).FirstOrDefaultAsync();
-
-        return employee;
+        return await _context.Employees.Where(e => e.Auth0Id == auth0Id).FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<Employee>> GetByName(string name)
+    public async Task<IEnumerable<Employee>> GetByName(string name, CancellationToken cancellationToken)
     {
         var result = await _context.Employees.Where(e => EF.Functions.Like($"{e.FirstName} {e.LastName}", name))
             .Include(e => e.Timesheets)
             .ThenInclude(t => t.Registrations)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
 
         return GroupEmployees(result);
     }

@@ -1,12 +1,13 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
-using System.Security.Claims;
 using TimesheetApp.Application.ErrorHandler;
-using TimesheetApp.Domain.Interfaces.Repositories;
+using TimesheetApp.Application.Interfaces.Repositories;
+using TimesheetApp.Application.Queries.Employees;
 using TimesheetApp.Infrastructure;
 using TimesheetApp.Infrastructure.Repositories;
 
@@ -137,10 +138,7 @@ app.UseAuthorization();
 // global error handler
 app.UseMiddleware<ErrorHandlerMiddleware>();
 
-app.UseEndpoints(ep =>
-{
-    ep.MapControllers();
-});
+app.MapControllers();
 
 app.Run();
 

@@ -1,6 +1,8 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TimesheetApp.Application.Commands.Timesheets;
+using TimesheetApp.Application.Queries.Timesheets;
 
 namespace TimesheetApp.API.Controllers;
 
@@ -21,9 +23,7 @@ public class TimesheetsController : ControllerBase
     {
         try
         {
-            var result = await _mediator.Send(new GetEmployeeByAuth0IdQuery(auth0Id));
-            var id = result.Id;
-            var timesheets = await _mediator.Send(new GetTimesheetsByEmployeeIdQuery(id));
+            var timesheets = await _mediator.Send(new GetTimesheetsByEmployeeIdQuery(auth0Id), HttpContext.RequestAborted);
             return Ok(timesheets.ToList());
         }
         catch (Exception ex)
@@ -38,7 +38,7 @@ public class TimesheetsController : ControllerBase
     {
         try
         {
-            await _mediator.Send(new SubmitTimesheetCommand(id));
+            await _mediator.Send(new SubmitTimesheetCommand(id), HttpContext.RequestAborted);
             return Ok();
         }
         catch (Exception ex)
@@ -53,7 +53,7 @@ public class TimesheetsController : ControllerBase
     {
         try
         {
-            await _mediator.Send(new ApproveTimesheetCommand(id));
+            await _mediator.Send(new ApproveTimesheetCommand(id), HttpContext.RequestAborted);
             return Ok();
         }
         catch (Exception ex)

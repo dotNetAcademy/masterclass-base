@@ -1,6 +1,3 @@
-using TimesheetApp.Domain.Exceptions;
-using TimesheetApp.Domain.Interfaces.Services;
-
 namespace TimesheetApp.Domain.Models;
 
 public class Holiday
@@ -9,18 +6,9 @@ public class Holiday
     public DateTime Date { get; set; }
     public string Name { get; set; }
 
-    public Holiday(DateTime date, string name, IValidateHoliday validateHoliday)
+    public Holiday(DateTime date, string name)
     {
-        var hasAlreadyHolidayOnDate = validateHoliday.CheckIfThereIsAlreadyAHolidayRegistredOnDay(date).Result;
-        if (!hasAlreadyHolidayOnDate)
-        {
-            Date = date;
-            Name = name;
-        }
-        else
-        {
-            throw new AppException("There is already a holiday registered on this day");
-        }
-
+        Date = date;
+        Name = name;
     }
 }

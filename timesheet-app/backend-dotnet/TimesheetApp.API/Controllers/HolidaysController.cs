@@ -1,7 +1,9 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TimesheetApp.Application.Commands.Holidays;
 using TimesheetApp.Application.DTOs;
+using TimesheetApp.Application.Queries.Holidays;
 
 namespace TimesheetApp.API.Controllers;
 
@@ -22,7 +24,7 @@ public class HolidaysController : ControllerBase
     {
         try
         {
-            var result = await _mediator.Send(new GetAllHolidaysQuery());
+            var result = await _mediator.Send(new GetAllHolidaysQuery(), HttpContext.RequestAborted);
             return Ok(result.ToList());
         }
         catch (Exception ex)
@@ -37,7 +39,7 @@ public class HolidaysController : ControllerBase
     {
         try
         {
-            await _mediator.Send(new AddHolidayCommand(holidayDTO));
+            await _mediator.Send(new AddHolidayCommand(holidayDTO), HttpContext.RequestAborted);
             return Ok(new { message = "Holiday succesful added" });
         }
         catch (Exception ex)

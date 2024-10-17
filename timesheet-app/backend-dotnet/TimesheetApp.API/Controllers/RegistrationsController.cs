@@ -1,7 +1,9 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TimesheetApp.Application.Commands.Registrations;
 using TimesheetApp.Application.DTOs;
+using TimesheetApp.Application.Queries.Registrations;
 using TimesheetApp.Domain.Exceptions;
 
 namespace TimesheetApp.API.Controllers;
@@ -21,7 +23,7 @@ public class RegistrationsController : ControllerBase
     [Authorize("read:registrations")]
     public async Task<IActionResult> Get()
     {
-        var result = await _mediator.Send(new GetRegistrationsQuery());
+        var result = await _mediator.Send(new GetRegistrationsQuery(), HttpContext.RequestAborted);
         return Ok(result.ToList());
     }
 
@@ -29,9 +31,7 @@ public class RegistrationsController : ControllerBase
     [Authorize("read:registrations")]
     public async Task<IActionResult> GetByDateAndEmployee(DateTime date, string auth0Id)
     {
-        var result = await _mediator.Send(new GetEmployeeByAuth0IdQuery(auth0Id));
-        var id = result.Id;
-        var registrations = await _mediator.Send(new GetRegistrationsByDateAndEmployeeQuery(date, id, auth0Id));
+        var registrations = await _mediator.Send(new GetRegistrationsByDateAndEmployeeQuery(date, auth0Id), HttpContext.RequestAborted);
         return Ok(registrations.ToList());
     }
 
@@ -43,9 +43,7 @@ public class RegistrationsController : ControllerBase
         {
             if (registrationDTO.Auth0Id != null)
             {
-                var result = await _mediator.Send(new GetEmployeeByAuth0IdQuery(registrationDTO.Auth0Id));
-                var id = result.Id;
-                await _mediator.Send(new EditRegistrationCommand(id, registrationDTO));
+                await _mediator.Send(new EditRegistrationCommand(registrationDTO), HttpContext.RequestAborted);
                 return Ok(new { message = "Timesheet Registration succesful added" });
             }
             return BadRequest("No Auth0Id provided");

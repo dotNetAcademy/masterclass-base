@@ -1,7 +1,5 @@
-using MediatR;
-using TimesheetApp.Domain.DomainEvents;
 using TimesheetApp.Domain.Exceptions;
-using TimesheetApp.Domain.Interfaces.Services;
+using TimesheetApp.Domain.Models.Enums;
 using TimesheetApp.Domain.Models.ValueObjects;
 
 namespace TimesheetApp.Domain.Models;
@@ -28,17 +26,14 @@ public class Timesheet
     public readonly ICollection<Registration> _registrations = new List<Registration>();
     public IReadOnlyCollection<Registration> Registrations => _registrations.ToList();
 
-    public List<INotification> DomainEvents { get; private set; } = new();
-
     public void InitRegistrations(List<Registration> registrations)
     {
         _registrations.Clear();
         registrations.ForEach(_registrations.Add);
     }
 
-    public async Task AddRegistration(Registration registration, IValidateRegistration validate)
+    public void AddRegistration(Registration registration)
     {
-
         if (IsApproved)
         {
             throw new AppException("The timesheet is already approved, no changes are allowed");
@@ -46,15 +41,7 @@ public class Timesheet
         RegistrationExceedsDayLimitOf8Hours(registration.TimeSlot, registration.Id);
         RegistrationExceedsWeekLimitOf40Hours(registration.TimeSlot, registration.Id);
 
-
-        var registrationOverlapsWithHoliday = await validate.CheckIfRegistrationOverlapsWithHoliday(registration.TimeSlot.Start);
-        if (registrationOverlapsWithHoliday)
-        {
-            throw new AppException("There is a holiday registred on this day");
-        }
-
         _registrations.Add(registration);
-
     }
 
     public void AddRegistrationsToCreateObject(Registration registration)
@@ -62,7 +49,7 @@ public class Timesheet
         _registrations.Add(registration);
     }
 
-    public void UpdateRegistration(int registrationId, string registrationType, TimeSlot timeSlot)
+    public void UpdateRegistration(int registrationId, RegistrationType registrationType, TimeSlot timeSlot)
     {
         if (IsApproved)
         {
@@ -92,7 +79,6 @@ public class Timesheet
         if (IsSubmitted)
         {
             IsApproved = true;
-            AddDomainEvent(new TimesheetStateChangedDomainEvent(this));
         }
         else
         {
@@ -205,16 +191,5 @@ public class Timesheet
             return true;
         }
         return false;
-    }
-
-    public void AddDomainEvent(INotification eventItem)
-    {
-        DomainEvents ??= new List<INotification>();
-        DomainEvents.Add(eventItem);
-    }
-
-    public void ClearDomainEvents()
-    {
-        DomainEvents.Clear();
     }
 }

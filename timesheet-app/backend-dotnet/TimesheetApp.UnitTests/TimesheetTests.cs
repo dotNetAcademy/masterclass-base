@@ -1,11 +1,11 @@
 using AutoFixture;
 using NSubstitute;
+using TimesheetApp.Application.Interfaces.Repositories;
 using TimesheetApp.Application.Mappers;
-using TimesheetApp.Domain.Interfaces.Repositories;
 using TimesheetApp.Domain.Models;
-using TimesheetApp.Domain.Models.StaticClasses;
+using TimesheetApp.Domain.Models.Enums;
 using TimesheetApp.Domain.Models.ValueObjects;
-using TimesheetApp.Domain.Services;
+using TimesheetApp.Domain.Validators;
 
 namespace TimesheetApp.UnitTests;
 
@@ -19,7 +19,7 @@ public class TimesheetTests
     {
         _fixture = new Fixture();
         _fixture.Customize<Employee>(e => e.FromFactory(() => new Employee(
-            _fixture.Create<string>(), _fixture.Create<string>(), _fixture.Create<string>(), _fixture.Create<string>(), _fixture.Create<string>(), _fixture.Create<string>()
+            _fixture.Create<string>(), _fixture.Create<string>(), _fixture.Create<string>(), _fixture.Create<string>(), _fixture.Create<Role>(), _fixture.Create<string>()
         )));
         _holidayRepository = Substitute.For<IHolidayRepository>();
 
@@ -43,11 +43,11 @@ public class TimesheetTests
             new(RegistrationType.Workday, new TimeSlot(new DateTime(2023, 11, 9, 8, 30, 0),new DateTime(2023, 11, 9, 17, 00, 0))),
             new(RegistrationType.Workday, new TimeSlot(new DateTime(2023, 11, 10, 9, 30, 0),new DateTime(2023, 11, 10, 17, 00, 0))),
         };
-        var validateRegistration = new ValidateRegistration(_holidayRepository);
+        var validateRegistration = new RegistrationValidator();
 
-        registrations.ForEach(async r => await employee.AddRegistration(r, validateRegistration));
+        registrations.ForEach(r => employee.AddRegistration(r));
 
-        var dtos = employee.Timesheets.Select(t => ConvertToTimesheetDTOWithWeeks.MapToTimesheetDTOWithWeeks(t));
+        var dtos = employee.Timesheets.Select(t => TimesheetMapper.ToDto(t));
 
         Assert.Equal(2, dtos.Count());
         Assert.Equal(40, dtos.First().TotalHours);

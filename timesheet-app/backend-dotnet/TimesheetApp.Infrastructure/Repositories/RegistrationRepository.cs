@@ -1,6 +1,6 @@
-using Microsoft.EntityFrameworkCore;
 using System.Data;
-using TimesheetApp.Domain.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
+using TimesheetApp.Application.Interfaces.Repositories;
 using TimesheetApp.Domain.Models;
 
 namespace TimesheetApp.Infrastructure.Repositories;
@@ -14,40 +14,34 @@ public class RegistrationRepository : IRegistrationRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<Registration>> GetAllAsync()
+    public async Task<IEnumerable<Registration>> GetAllAsync(CancellationToken cancellationToken)
     {
-        var registrations = await _context.Registrations.ToListAsync();
-
-        return registrations;
+        return await _context.Registrations.ToListAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<Registration>> GetByDateAsync(DateTime date)
+    public async Task<IEnumerable<Registration>> GetByDateAsync(DateTime date, CancellationToken cancellationToken)
     {
-        var registrations = await _context.Registrations.Where(r => r.TimeSlot.Start.Date == date.Date).ToListAsync();
-
-        return registrations;
+        return await _context.Registrations.Where(r => r.TimeSlot.Start.Date == date.Date).ToListAsync(cancellationToken);
     }
 
-    public async Task<Registration?> GetByIdAsync(long id)
+    public async Task<Registration?> GetByIdAsync(long id, CancellationToken cancellationToken)
     {
-        var registration = await _context.Registrations.Where(r => r.Id == id).SingleOrDefaultAsync();
-
-        return registration;
+        return await _context.Registrations.Where(r => r.Id == id).SingleOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<Registration>> GetByDateAndEmployeeAsync(DateTime date, string employeeId)
+    public async Task<IEnumerable<Registration>> GetByDateAndEmployeeAsync(DateTime date, string employeeId, CancellationToken cancellationToken)
     {
         return await _context.Employees
             .Where(e => e.Id == employeeId)
             .SelectMany(e => e.Timesheets)
             .SelectMany(t => t.Registrations)
             .Where(r => r.TimeSlot.Start.Date == date.Date)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 
-    public async Task Update(Registration registration)
+    public async Task Update(Registration registration, CancellationToken cancellationToken)
     {
         _context.Registrations.Update(registration);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
     }
 }

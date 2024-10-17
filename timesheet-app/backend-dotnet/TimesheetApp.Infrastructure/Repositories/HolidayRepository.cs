@@ -1,9 +1,9 @@
 using System.Data;
 using Microsoft.EntityFrameworkCore;
-using TimesheetApp.Domain.Interfaces.Repositories;
-using TimesheetApp.Domain.Interfaces.Services;
+using TimesheetApp.Application.Interfaces.Repositories;
+using TimesheetApp.Application.Interfaces.Validators;
 using TimesheetApp.Domain.Models;
-using TimesheetApp.Domain.Services;
+using TimesheetApp.Domain.Validators;
 
 namespace TimesheetApp.Infrastructure.Repositories;
 
@@ -15,23 +15,19 @@ public class HolidayRepository : IHolidayRepository
     {
         _context = context;
     }
-    public async Task<IEnumerable<Holiday>> GetAll()
+    public async Task<IEnumerable<Holiday>> GetAll(CancellationToken cancellationToken)
     {
-        var holidays = await _context.Holidays.OrderBy(h => h.Date).ToListAsync();
-        return holidays;
+        return await _context.Holidays.OrderBy(h => h.Date).ToListAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<Holiday>> GetByDate(DateTime date)
+    public async Task<IEnumerable<Holiday>> GetByDate(DateTime date, CancellationToken cancellationToken)
     {
-        var holidays = await _context.Holidays.Where(h => h.Date == date).ToListAsync();
-        return holidays;
+        return await _context.Holidays.Where(h => h.Date == date).ToListAsync(cancellationToken);
     }
 
-    public async Task CreateHoliday(DateTime date, string name)
+    public async Task CreateHoliday(Holiday holiday, CancellationToken cancellationToken)
     {
-        IValidateHoliday validateHoliday = new ValidateHoliday(this);
-        var holiday = new Holiday(date, name, validateHoliday);
         _context.Holidays.Add(holiday);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
     }
 }

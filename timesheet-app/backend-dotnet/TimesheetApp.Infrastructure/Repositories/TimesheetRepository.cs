@@ -1,6 +1,6 @@
 using System.Data;
 using Microsoft.EntityFrameworkCore;
-using TimesheetApp.Domain.Interfaces.Repositories;
+using TimesheetApp.Application.Interfaces.Repositories;
 using TimesheetApp.Domain.Models;
 
 namespace TimesheetApp.Infrastructure.Repositories;
@@ -14,13 +14,12 @@ public class TimesheetRepository : ITimesheetRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<Timesheet>> GetByUserId(string employeeId)
+    public async Task<IEnumerable<Timesheet>> GetByUserId(string employeeId, CancellationToken cancellationToken)
     {
-        var timesheets = await _context.Employees.Where(e => e.Id == employeeId)
+        return await _context.Employees.Where(e => e.Id == employeeId)
             .SelectMany(e => e.Timesheets)
             .Include(t => t.Registrations)
-            .ToListAsync();
-        return timesheets;
+            .ToListAsync(cancellationToken);
     }
 
     private static Timesheet? CheckIfTimesheetAlreadyInList(Timesheet timesheet, List<Timesheet> timesheets)
@@ -28,23 +27,21 @@ public class TimesheetRepository : ITimesheetRepository
         return timesheets.SingleOrDefault(t => t.Id == timesheet.Id);
     }
 
-    public async Task Update(Timesheet timesheet)
+    public async Task Update(Timesheet timesheet, CancellationToken cancellationToken)
     {
         _context.Timesheets.Update(timesheet);
-        await _context.SaveEntitiesAsync();
+        await _context.SaveEntitiesAsync(cancellationToken);
     }
 
-    public async Task<Timesheet?> GetById(int id)
+    public async Task<Timesheet?> GetById(int id, CancellationToken cancellationToken)
     {
-        var timesheet = await _context.Timesheets.Where(t => t.Id == id).SingleOrDefaultAsync();
-        return timesheet;
+        return await _context.Timesheets.Where(t => t.Id == id).SingleOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<Timesheet> CheckIfTimesheetOfRegistrationsIsApproved(int month, int year, string employeeId)
+    public async Task<Timesheet> CheckIfTimesheetOfRegistrationsIsApproved(int month, int year, string employeeId, CancellationToken cancellationToken)
     {
-        var timesheet = await _context.Employees.Where(e => e.Id == employeeId)
+        return await _context.Employees.Where(e => e.Id == employeeId)
             .Select(e => e.Timesheets.Where(t => t.Month == month && t.Year == year).First())
-            .SingleAsync();
-        return timesheet;
+            .SingleAsync(cancellationToken);
     }
 }

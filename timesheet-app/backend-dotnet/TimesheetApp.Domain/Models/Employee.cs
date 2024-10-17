@@ -1,11 +1,11 @@
-using TimesheetApp.Domain.Interfaces.Services;
+using TimesheetApp.Domain.Models.Enums;
 using TimesheetApp.Domain.Models.ValueObjects;
 
 namespace TimesheetApp.Domain.Models;
 
 public class Employee
 {
-    public Employee(string id, string firstName, string lastName, string email, string role, string auth0Id)
+    public Employee(string id, string firstName, string lastName, string email, Role role, string auth0Id)
     {
         Id = id;
         FirstName = firstName;
@@ -19,7 +19,7 @@ public class Employee
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
     public string Email { get; private set; }
-    public string Role { get; private set; }
+    public Role Role { get; private set; }
 
     public string? Auth0Id { get; private set; }
 
@@ -37,7 +37,7 @@ public class Employee
         _timesheets.Add(timesheet);
     }
 
-    public async Task AddRegistration(Registration registration, IValidateRegistration validateRegistration)
+    public void AddRegistration(Registration registration)
     {
         var timesheet = _timesheets.SingleOrDefault(t => t.Year == registration.TimeSlot.Start.Year && t.Month == registration.TimeSlot.Start.Month);
 
@@ -48,10 +48,10 @@ public class Employee
         }
 
 
-        await timesheet.AddRegistration(registration, validateRegistration);
+        timesheet.AddRegistration(registration);
     }
 
-    public void UpdateRegistration(int registrationId, string registrationType, TimeSlot timeSlot)
+    public void UpdateRegistration(int registrationId, RegistrationType registrationType, TimeSlot timeSlot)
     {
         var timesheet = _timesheets.Single(t => t.Year == timeSlot.Start.Year && t.Month == timeSlot.Start.Month);
         timesheet.UpdateRegistration(registrationId, registrationType, timeSlot);

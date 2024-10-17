@@ -1,29 +1,23 @@
 using AutoFixture;
-using NSubstitute;
 using TimesheetApp.Application.Mappers;
-using TimesheetApp.Domain.Interfaces.Repositories;
-using TimesheetApp.Domain.Interfaces.Services;
 using TimesheetApp.Domain.Models;
-using TimesheetApp.Domain.Models.StaticClasses;
+using TimesheetApp.Domain.Models.Enums;
 using TimesheetApp.Domain.Models.ValueObjects;
-using TimesheetApp.Domain.Services;
 
 namespace TimesheetApp.UnitTests;
 
 public class EmployeeTests
 {
     private readonly Fixture _fixture;
-    private readonly IHolidayRepository _holidayRepository;
 
     public EmployeeTests()
     {
         _fixture = new Fixture();
 
         _fixture.Customize<Employee>(e => e.FromFactory(() => new Employee(
-            _fixture.Create<string>(), _fixture.Create<string>(), _fixture.Create<string>(), _fixture.Create<string>(), _fixture.Create<string>(), _fixture.Create<string>()
+            _fixture.Create<string>(), _fixture.Create<string>(), _fixture.Create<string>(), _fixture.Create<string>(), _fixture.Create<Role>(), _fixture.Create<string>()
         )));
 
-        _holidayRepository = Substitute.For<IHolidayRepository>();
     }
 
     [Fact]
@@ -45,11 +39,10 @@ public class EmployeeTests
             new (RegistrationType.Workday, new TimeSlot(new DateTime(2023, 11, 9, 8, 30, 0),new DateTime(2023, 11, 9, 17, 00, 0))),
             new (RegistrationType.Workday, new TimeSlot(new DateTime(2023, 11, 10, 9, 30, 0),new DateTime(2023, 11, 10, 17, 00, 0))),
         };
-        IValidateRegistration validateRegistration = new ValidateRegistration(_holidayRepository);
 
-        registrations.ForEach(async r => await employee.AddRegistration(r, validateRegistration));
+        registrations.ForEach(r => employee.AddRegistration(r));
 
-        var employeeDTO = ConvertToEmployeeDTOWithTimesheets.MapToEmployeeDTOWithTimesheets(employee);
+        var employeeDTO = EmployeeMapper.ToDto(employee);
 
         Assert.Equal(2, employeeDTO.Timesheets?.Count());
         Assert.Equal(40, employeeDTO.Timesheets?.First().TotalHours);

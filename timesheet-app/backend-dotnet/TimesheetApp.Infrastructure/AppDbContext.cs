@@ -1,8 +1,7 @@
+using System.Reflection;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 using TimesheetApp.Domain.Models;
-using TimesheetApp.Infrastructure.MediatorExtension;
 
 namespace TimesheetApp.Infrastructure;
 
@@ -19,7 +18,6 @@ public class AppDbContext : DbContext
 
     public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
     {
-        await _mediator.DispatchDomainEventsAsync(this);
         var result = await base.SaveChangesAsync();
         return true;
     }

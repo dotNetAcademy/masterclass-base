@@ -1,7 +1,9 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TimesheetApp.Application.Commands.Registrations;
 using TimesheetApp.Application.DTOs;
+using TimesheetApp.Application.Queries.Employees;
 using TimesheetApp.Domain.Exceptions;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -24,7 +26,7 @@ public class EmployeesController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        var result = await _mediator.Send(new GetEmployeesQuery());
+        var result = await _mediator.Send(new GetEmployeesQuery(), HttpContext.RequestAborted);
         return Ok(result.ToList());
     }
 
@@ -33,14 +35,14 @@ public class EmployeesController : ControllerBase
     [Authorize("read:employees")]
     public async Task<IActionResult> GetById(string id)
     {
-        var result = await _mediator.Send(new GetEmployeeByIdQuery(id));
+        var result = await _mediator.Send(new GetEmployeeByIdQuery(id), HttpContext.RequestAborted);
         return Ok(result);
     }
 
     [HttpGet("name/{name}")]
     public async Task<IActionResult> GetByName(string name)
     {
-        var result = await _mediator.Send(new GetEmployeesByNameQuery(name));
+        var result = await _mediator.Send(new GetEmployeesByNameQuery(name), HttpContext.RequestAborted);
         return Ok(result);
     }
 
@@ -50,9 +52,7 @@ public class EmployeesController : ControllerBase
     {
         try
         {
-            var result = await _mediator.Send(new GetEmployeeByAuth0IdQuery(addRegistrationDTO.Auth0Id));
-            var id = result.Id;
-            await _mediator.Send(new AddRegistrationCommand(id, addRegistrationDTO));
+            await _mediator.Send(new AddRegistrationCommand(addRegistrationDTO), HttpContext.RequestAborted);
             return Ok(new { message = "Registration succesful added" });
         }
         catch (AppException ex)
