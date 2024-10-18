@@ -5,7 +5,9 @@ namespace TimesheetApp.Domain.Validators;
 
 public class RegistrationValidator : IRegistrationValidator
 {
-    public RegistrationValidator() { }
+    public RegistrationValidator()
+    {
+    }
     public bool CheckIfRegistrationOverlapsWithHoliday(DateTime date, List<Holiday> holidays)
     {
         date = date.AddHours(-date.Hour);

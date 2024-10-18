@@ -1,28 +1,27 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace TimesheetApp.Infrastructure.Migrations
+namespace TimesheetApp.Infrastructure.Migrations;
+
+/// <inheritdoc />
+public partial class EmployeeHasAuth0Id : Migration
 {
     /// <inheritdoc />
-    public partial class EmployeeHasAuth0Id : Migration
+    protected override void Up(MigrationBuilder migrationBuilder)
     {
-        /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.AddColumn<string>(
-                name: "Auth0Id",
-                table: "Employee",
-                type: "nvarchar(max)",
-                nullable: true);
-        }
+        migrationBuilder.AddColumn<string>(
+            name: "Auth0Id",
+            table: "Employee",
+            type: "nvarchar(max)",
+            nullable: true);
+    }
 
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "Auth0Id",
-                table: "Employee");
-        }
+    /// <inheritdoc />
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.DropColumn(
+            name: "Auth0Id",
+            table: "Employee");
     }
 }

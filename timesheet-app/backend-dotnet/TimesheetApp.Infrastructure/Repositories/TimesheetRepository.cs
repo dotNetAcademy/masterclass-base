@@ -22,11 +22,6 @@ public class TimesheetRepository : ITimesheetRepository
             .ToListAsync(cancellationToken);
     }
 
-    private static Timesheet? CheckIfTimesheetAlreadyInList(Timesheet timesheet, List<Timesheet> timesheets)
-    {
-        return timesheets.SingleOrDefault(t => t.Id == timesheet.Id);
-    }
-
     public async Task Update(Timesheet timesheet, CancellationToken cancellationToken)
     {
         _context.Timesheets.Update(timesheet);
@@ -43,5 +38,10 @@ public class TimesheetRepository : ITimesheetRepository
         return await _context.Employees.Where(e => e.Id == employeeId)
             .Select(e => e.Timesheets.Where(t => t.Month == month && t.Year == year).First())
             .SingleAsync(cancellationToken);
+    }
+
+    private static Timesheet? CheckIfTimesheetAlreadyInList(Timesheet timesheet, List<Timesheet> timesheets)
+    {
+        return timesheets.SingleOrDefault(t => t.Id == timesheet.Id);
     }
 }

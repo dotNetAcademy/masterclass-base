@@ -5,6 +5,8 @@ namespace TimesheetApp.Domain.Models;
 
 public class Employee
 {
+    private readonly List<Timesheet> _timesheets = new();
+
     public Employee(string id, string firstName, string lastName, string email, Role role, string auth0Id)
     {
         Id = id;
@@ -23,7 +25,6 @@ public class Employee
 
     public string? Auth0Id { get; private set; }
 
-    private readonly ICollection<Timesheet> _timesheets = new List<Timesheet>();
     public IReadOnlyCollection<Timesheet> Timesheets => _timesheets.ToList();
 
     public void InitTimesheets(List<Timesheet> timesheets)
@@ -46,7 +47,6 @@ public class Employee
             timesheet = new Timesheet(registration.TimeSlot.Start.Year, registration.TimeSlot.Start.Month);
             AddTimesheet(timesheet);
         }
-
 
         timesheet.AddRegistration(registration);
     }

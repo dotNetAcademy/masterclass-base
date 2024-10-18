@@ -11,6 +11,10 @@ public class Registration
         TimeSlot = timeSlot;
     }
 
+    private Registration()
+    {
+    }
+
     public int Id { get; internal set; }
     public RegistrationType RegistrationType { get; private set; }
     public TimeSlot TimeSlot { get; private set; } = default!;
@@ -25,6 +29,4 @@ public class Registration
         RegistrationType = registrationType;
         ChangeTimeSlot(timeSlot);
     }
-
-    private Registration() { }
 }

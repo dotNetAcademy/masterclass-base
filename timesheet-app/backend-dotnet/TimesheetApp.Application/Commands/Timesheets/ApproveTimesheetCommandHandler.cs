@@ -17,7 +17,7 @@ public class ApproveTimesheetCommandHandler : IRequestHandler<ApproveTimesheetCo
 
     public async Task Handle(ApproveTimesheetCommand request, CancellationToken cancellationToken)
     {
-        var timesheet = _timesheetRepository.GetById(request.Id, cancellationToken).Result
+        var timesheet = await _timesheetRepository.GetById(request.Id, cancellationToken)
             ?? throw new KeyNotFoundException($"There is no timesheet with id {request.Id}");
 
         timesheet.ApproveTimesheet();
@@ -28,4 +28,3 @@ public class ApproveTimesheetCommandHandler : IRequestHandler<ApproveTimesheetCo
 }
 
 public record ApproveTimesheetCommand(int Id) : IRequest;
-

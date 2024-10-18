@@ -28,4 +28,3 @@ public class SubmitTimesheetCommandHandler : IRequestHandler<SubmitTimesheetComm
 }
 
 public record SubmitTimesheetCommand(int Id) : IRequest;
-

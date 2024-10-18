@@ -1,40 +1,39 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace TimesheetApp.Infrastructure.Migrations
+namespace TimesheetApp.Infrastructure.Migrations;
+
+/// <inheritdoc />
+public partial class SubmitTimesheetInsteadRegistration : Migration
 {
     /// <inheritdoc />
-    public partial class SubmitTimesheetInsteadRegistration : Migration
+    protected override void Up(MigrationBuilder migrationBuilder)
     {
-        /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "IsSubmitted",
-                table: "Registration");
+        migrationBuilder.DropColumn(
+            name: "IsSubmitted",
+            table: "Registration");
 
-            migrationBuilder.AddColumn<bool>(
-                name: "IsSubmitted",
-                table: "Timesheet",
-                type: "bit",
-                nullable: false,
-                defaultValue: false);
-        }
+        migrationBuilder.AddColumn<bool>(
+            name: "IsSubmitted",
+            table: "Timesheet",
+            type: "bit",
+            nullable: false,
+            defaultValue: false);
+    }
 
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "IsSubmitted",
-                table: "Timesheet");
+    /// <inheritdoc />
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.DropColumn(
+            name: "IsSubmitted",
+            table: "Timesheet");
 
-            migrationBuilder.AddColumn<bool>(
-                name: "IsSubmitted",
-                table: "Registration",
-                type: "bit",
-                nullable: false,
-                defaultValue: false);
-        }
+        migrationBuilder.AddColumn<bool>(
+            name: "IsSubmitted",
+            table: "Registration",
+            type: "bit",
+            nullable: false,
+            defaultValue: false);
     }
 }

@@ -32,4 +32,3 @@ public class GetRegistrationsByDateAndEmployeeHandler : IRequestHandler<GetRegis
 }
 
 public record GetRegistrationsByDateAndEmployeeQuery(DateTime Date, string Auth0Id) : IRequest<IEnumerable<RegistrationDTO>>;
-

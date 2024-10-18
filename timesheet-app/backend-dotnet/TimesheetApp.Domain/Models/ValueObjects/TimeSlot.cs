@@ -6,7 +6,8 @@ namespace TimesheetApp.Domain.Models.ValueObjects;
 public class TimeSlot : ValueObject
 {
     public TimeSlot()
-    { }
+    {
+    }
 
     public TimeSlot(DateTime start, DateTime end)
     {
@@ -29,12 +30,6 @@ public class TimeSlot : ValueObject
     public DateTime Start { get; private set; }
     public DateTime End { get; private set; }
 
-    protected override IEnumerable<IComparable> GetEqualityComponents()
-    {
-        yield return Start;
-        yield return End;
-    }
-
     public double TotalHours
     {
         get
@@ -49,5 +44,10 @@ public class TimeSlot : ValueObject
         {
             throw new AppException("There is an overlap with another registration");
         }
+    }
+    protected override IEnumerable<IComparable> GetEqualityComponents()
+    {
+        yield return Start;
+        yield return End;
     }
 }

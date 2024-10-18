@@ -23,4 +23,3 @@ public class GetEmployeesByNameQueryHandler : IRequestHandler<GetEmployeesByName
 }
 
 public record GetEmployeesByNameQuery(string Name) : IRequest<IEnumerable<EmployeeDTO>>;
-

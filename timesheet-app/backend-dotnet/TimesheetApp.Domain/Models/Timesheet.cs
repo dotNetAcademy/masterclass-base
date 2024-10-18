@@ -6,8 +6,11 @@ namespace TimesheetApp.Domain.Models;
 
 public class Timesheet
 {
+    private readonly List<Registration> _registrations = new();
+
     public Timesheet()
-    { }
+    {
+    }
 
     public Timesheet(int year, int month)
     {
@@ -23,8 +26,21 @@ public class Timesheet
     public bool IsSubmitted { get; private set; }
     public bool IsApproved { get; private set; }
 
-    public readonly ICollection<Registration> _registrations = new List<Registration>();
     public IReadOnlyCollection<Registration> Registrations => _registrations.ToList();
+
+    public static (DateTime, DateTime) GetFirstAndLastDayFromWeek(DateTime date)
+    {
+        var diffrence = date.DayOfWeek - DayOfWeek.Monday;
+
+        if (diffrence < 0)
+        {
+            diffrence += 7;
+        }
+
+        var startDate = date.AddDays(-diffrence).Date;
+
+        return (startDate, startDate.AddDays(6));
+    }
 
     public void InitRegistrations(List<Registration> registrations)
     {
@@ -75,7 +91,6 @@ public class Timesheet
 
     public void ApproveTimesheet()
     {
-
         if (IsSubmitted)
         {
             IsApproved = true;
@@ -106,20 +121,6 @@ public class Timesheet
         DateTime startDate, endDate;
         (startDate, endDate) = GetFirstAndLastDayFromWeek(date);
         return Registrations.Where(r => r.TimeSlot.Start.Day >= startDate.Day && r.TimeSlot.Start.Day <= endDate.Day);
-    }
-
-    public static (DateTime, DateTime) GetFirstAndLastDayFromWeek(DateTime date)
-    {
-        var diffrence = date.DayOfWeek - DayOfWeek.Monday;
-
-        if (diffrence < 0)
-        {
-            diffrence += 7;
-        }
-
-        var startDate = date.AddDays(-diffrence).Date;
-
-        return (startDate, startDate.AddDays(6));
     }
 
     public void RegistrationExceedsDayLimitOf8Hours(TimeSlot timeSlot, int? registrationId)

@@ -30,52 +30,35 @@ builder.Services
   {
       options.AddPolicy(
         "read:employees",
-        policy => policy.Requirements.Add(
-          new HasScopeRequirement("read:employees", builder.Configuration["Auth0:Domain"]!)
-        )
-      );
+        policy => policy.Requirements.Add(new HasScopeRequirement("read:employees", builder.Configuration["Auth0:Domain"]!)));
       options.AddPolicy(
         "read:registrations",
         policy => policy.Requirements.Add(
-          new HasScopeRequirement("read:registrations", builder.Configuration["Auth0:Domain"]!)
-        )
-      );
+          new HasScopeRequirement("read:registrations", builder.Configuration["Auth0:Domain"]!)));
       options.AddPolicy(
         "write:registrations",
         policy => policy.Requirements.Add(
-          new HasScopeRequirement("write:registrations", builder.Configuration["Auth0:Domain"]!)
-        )
-      );
+          new HasScopeRequirement("write:registrations", builder.Configuration["Auth0:Domain"]!)));
       options.AddPolicy(
         "read:timesheets",
         policy => policy.Requirements.Add(
-          new HasScopeRequirement("read:timesheets", builder.Configuration["Auth0:Domain"]!)
-        )
-      );
+          new HasScopeRequirement("read:timesheets", builder.Configuration["Auth0:Domain"]!)));
       options.AddPolicy(
         "submit:timesheets",
         policy => policy.Requirements.Add(
-          new HasScopeRequirement("submit:timesheets", builder.Configuration["Auth0:Domain"]!)
-        )
-      );
+          new HasScopeRequirement("submit:timesheets", builder.Configuration["Auth0:Domain"]!)));
       options.AddPolicy(
         "approve:timesheets",
         policy => policy.Requirements.Add(
-          new HasScopeRequirement("approve:timesheets", builder.Configuration["Auth0:Domain"]!)
-        )
-      );
+          new HasScopeRequirement("approve:timesheets", builder.Configuration["Auth0:Domain"]!)));
       options.AddPolicy(
         "read:holidays",
         policy => policy.Requirements.Add(
-          new HasScopeRequirement("read:holidays", builder.Configuration["Auth0:Domain"]!)
-        )
-      );
+          new HasScopeRequirement("read:holidays", builder.Configuration["Auth0:Domain"]!)));
       options.AddPolicy(
         "write:holidays",
         policy => policy.Requirements.Add(
-          new HasScopeRequirement("write:holidays", builder.Configuration["Auth0:Domain"]!)
-        )
-      );
+          new HasScopeRequirement("write:holidays", builder.Configuration["Auth0:Domain"]!)));
   });
 
 builder.Services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
@@ -101,10 +84,8 @@ var logger = new LoggerConfiguration()
     .WriteTo.File("Logs/Logging.log", rollingInterval: RollingInterval.Day)
     .CreateLogger();
 
-
 builder.Logging.ClearProviders();
 builder.Logging.AddSerilog(logger);
-
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -143,4 +124,5 @@ app.MapControllers();
 app.Run();
 
 public partial class Program
-{ }
+{
+}

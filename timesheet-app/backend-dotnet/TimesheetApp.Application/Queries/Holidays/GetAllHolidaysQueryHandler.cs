@@ -21,4 +21,3 @@ public class GetAllHolidaysQueryHandler : IRequestHandler<GetAllHolidaysQuery, I
 }
 
 public record GetAllHolidaysQuery() : IRequest<IEnumerable<HolidayDTO>>;
-

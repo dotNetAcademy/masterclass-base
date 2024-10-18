@@ -27,4 +27,3 @@ public class GetTimesheetsByEmployeeIdQueryHandler : IRequestHandler<GetTimeshee
 }
 
 public record GetTimesheetsByEmployeeIdQuery(string Auth0Id) : IRequest<IEnumerable<TimesheetDTO>>;
-

@@ -44,4 +44,3 @@ public class AddRegistrationCommandHandler : IRequestHandler<AddRegistrationComm
 }
 
 public record AddRegistrationCommand(AddRegistrationDTO AddRegistrationDTO) : IRequest;
-

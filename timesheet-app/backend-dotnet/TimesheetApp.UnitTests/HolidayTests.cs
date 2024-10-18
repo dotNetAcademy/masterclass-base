@@ -1,7 +1,6 @@
 using NSubstitute;
 using TimesheetApp.Application.Interfaces.Repositories;
 using TimesheetApp.Application.Interfaces.Validators;
-using TimesheetApp.Domain.Exceptions;
 using TimesheetApp.Domain.Models;
 using TimesheetApp.Domain.Validators;
 
@@ -27,11 +26,9 @@ public class HolidayTests
         _holidayRepository.GetByDate(default, CancellationToken.None).ReturnsForAnyArgs(holidays);
         IHolidayValidator validateHoliday = new HolidayValidator();
 
-        var exception = Assert.Throws<AppException>(() =>
-            new Holiday(new DateTime(2024, 12, 25), "Test")
-        );
+        var newHoliday = new Holiday(new DateTime(2024, 12, 25), "Test");
 
         // Assert
-        Assert.Equal("There is already a holiday registered on this day", exception.Message);
+        Assert.True(validateHoliday.CheckIfThereIsAlreadyAHolidayRegistredOnDay(newHoliday.Date, holidays));
     }
 }

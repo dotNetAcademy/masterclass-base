@@ -33,6 +33,27 @@ public class EmployeeRepository : IEmployeeRepository
         return GroupEmployees(result).SingleOrDefault();
     }
 
+    public async Task Update(Employee employee, CancellationToken cancellationToken)
+    {
+        _context.Employees.Update(employee);
+        await _context.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task<Employee?> GetByAuth0Id(string auth0Id, CancellationToken cancellationToken)
+    {
+        return await _context.Employees.Where(e => e.Auth0Id == auth0Id).FirstOrDefaultAsync(cancellationToken);
+    }
+
+    public async Task<IEnumerable<Employee>> GetByName(string name, CancellationToken cancellationToken)
+    {
+        var result = await _context.Employees.Where(e => EF.Functions.Like($"{e.FirstName} {e.LastName}", name))
+            .Include(e => e.Timesheets)
+            .ThenInclude(t => t.Registrations)
+            .ToListAsync(cancellationToken);
+
+        return GroupEmployees(result);
+    }
+
     private static IEnumerable<Employee> GroupEmployees(IEnumerable<Employee> result)
     {
         return result.GroupBy(e => e.Id).Select(e =>
@@ -56,26 +77,5 @@ public class EmployeeRepository : IEmployeeRepository
             }
             return employee;
         });
-    }
-
-    public async Task Update(Employee employee, CancellationToken cancellationToken)
-    {
-        _context.Employees.Update(employee);
-        await _context.SaveChangesAsync(cancellationToken);
-    }
-
-    public async Task<Employee?> GetByAuth0Id(string auth0Id, CancellationToken cancellationToken)
-    {
-        return await _context.Employees.Where(e => e.Auth0Id == auth0Id).FirstOrDefaultAsync(cancellationToken);
-    }
-
-    public async Task<IEnumerable<Employee>> GetByName(string name, CancellationToken cancellationToken)
-    {
-        var result = await _context.Employees.Where(e => EF.Functions.Like($"{e.FirstName} {e.LastName}", name))
-            .Include(e => e.Timesheets)
-            .ThenInclude(t => t.Registrations)
-            .ToListAsync(cancellationToken);
-
-        return GroupEmployees(result);
     }
 }
