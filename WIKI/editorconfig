@@ -1,0 +1,839 @@
+# To learn more about .editorconfig see https://aka.ms/editorconfigdocs
+##########################################
+# Common Settings
+##########################################
+
+# This file is the top-most EditorConfig file
+root = true
+
+# All Files
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+
+trim_trailing_whitespace = true
+csharp_style_expression_bodied_operators= true:suggestion
+csharp_indent_labels = no_change
+csharp_using_directive_placement = outside_namespace:error
+csharp_prefer_simple_using_statement = true:suggestion
+csharp_prefer_braces = true:error
+csharp_style_namespace_declarations = file_scoped:error
+csharp_style_expression_bodied_methods = true:suggestion
+csharp_style_expression_bodied_constructors = false:suggestion
+csharp_style_expression_bodied_properties = true:suggestion
+csharp_style_expression_bodied_indexers = true:suggestion
+csharp_style_expression_bodied_accessors = true:suggestion
+csharp_style_expression_bodied_lambdas = true:suggestion
+csharp_style_expression_bodied_local_functions = true:suggestion
+csharp_style_throw_expression = true:warning
+csharp_style_prefer_null_check_over_type_check = true:suggestion
+csharp_prefer_simple_default_expression = true:warning
+csharp_style_prefer_local_over_anonymous_function = true:suggestion
+csharp_style_prefer_index_operator = true:warning
+csharp_style_prefer_range_operator = true:warning
+csharp_style_implicit_object_creation_when_type_is_apparent = true:warning
+csharp_style_prefer_tuple_swap = true:suggestion
+csharp_style_inlined_variable_declaration = true:warning
+csharp_style_deconstructed_variable_declaration = true:warning
+csharp_style_unused_value_assignment_preference = discard_variable:suggestion
+csharp_style_unused_value_expression_statement_preference = discard_variable:silent
+csharp_prefer_static_local_function = true:suggestion
+csharp_style_allow_embedded_statements_on_same_line_experimental = true:silent
+csharp_style_allow_blank_lines_between_consecutive_braces_experimental = true:silent
+csharp_style_allow_blank_line_after_colon_in_constructor_initializer_experimental = true:silent
+csharp_style_prefer_method_group_conversion = true:silent
+csharp_style_prefer_top_level_statements = true:silent
+csharp_space_around_binary_operators = before_and_after
+csharp_style_prefer_primary_constructors = true:suggestion
+
+##########################################
+# File Extension Settings
+##########################################
+
+# Visual Studio Solution Files
+[*.sln]
+indent_style = tab
+
+# Visual Studio XML Project Files
+[*.{csproj,vbproj,vcxproj.filters,proj,projitems,shproj}]
+indent_size = 2
+
+# XML Configuration Files
+[*.{xml,config,props,targets,nuspec,resx,ruleset,vsixmanifest,vsct}]
+indent_size = 2
+
+# JSON Files
+[*.{json,json5,webmanifest}]
+indent_size = 2
+
+# YAML Files
+[*.{yml,yaml}]
+indent_size = 2
+
+# Markdown Files
+[*.md]
+trim_trailing_whitespace = false
+
+# Web Files
+[*.{htm,html,js,jsm,ts,tsx,css,sass,scss,less,svg,vue}]
+indent_size = 2
+
+# Batch Files
+[*.{cmd,bat}]
+end_of_line = crlf
+
+# Bash Files
+[*.sh]
+end_of_line = lf
+
+# Makefiles
+[Makefile]
+indent_style = tab
+
+# Blazor
+dotnet_style_namespace_match_folder = true:suggestion
+dotnet_style_allow_multiple_blank_lines_experimental = true:silent
+dotnet_style_allow_statement_immediately_after_block_experimental = true:silent
+tab_width = 4
+end_of_line = crlf
+
+##########################################
+# .NET Language Conventions
+# https://docs.microsoft.com/visualstudio/ide/editorconfig-language-conventions
+##########################################
+
+
+##########################################
+# .NET Code Style Settings
+# https://docs.microsoft.com/visualstudio/ide/editorconfig-language-conventions#net-code-style-settings
+##########################################
+[*.{cs,csx,cake,vb,vbx}]
+
+# "this." and "Me." qualifiers
+# https://docs.microsoft.com/visualstudio/ide/editorconfig-language-conventions#this-and-me
+dotnet_style_qualification_for_field = false:error
+dotnet_style_qualification_for_property = false:error
+dotnet_style_qualification_for_method = false:error
+dotnet_style_qualification_for_event = false:error
+
+# Language keywords instead of framework type names for type references
+# https://docs.microsoft.com/visualstudio/ide/editorconfig-language-conventions#language-keywords
+dotnet_style_predefined_type_for_locals_parameters_members = true:warning
+dotnet_style_predefined_type_for_member_access = true:warning
+
+# Modifier preferences
+# https://docs.microsoft.com/visualstudio/ide/editorconfig-language-conventions#normalize-modifiers
+dotnet_style_require_accessibility_modifiers = for_non_interface_members:error
+csharp_preferred_modifier_order = public, private, protected, internal, static, extern, new, virtual, abstract, sealed, override, readonly, unsafe, volatile, async:warning
+dotnet_style_readonly_field = true:error
+
+# Parentheses preferences
+# https://docs.microsoft.com/visualstudio/ide/editorconfig-language-conventions#parentheses-preferences
+dotnet_style_parentheses_in_arithmetic_binary_operators = always_for_clarity:warning
+dotnet_style_parentheses_in_relational_binary_operators = always_for_clarity:warning
+dotnet_style_parentheses_in_other_binary_operators = always_for_clarity:warning
+dotnet_style_parentheses_in_other_operators = never_if_unnecessary:suggestion
+
+# Expression-level preferences
+# https://docs.microsoft.com/visualstudio/ide/editorconfig-language-conventions#expression-level-preferences
+dotnet_style_object_initializer = true:warning
+dotnet_style_collection_initializer = true:warning
+dotnet_style_explicit_tuple_names = true:warning
+dotnet_style_prefer_inferred_tuple_names = true:warning
+dotnet_style_prefer_inferred_anonymous_type_member_names = true:warning
+dotnet_style_prefer_auto_properties = true:warning
+dotnet_style_prefer_conditional_expression_over_assignment = true:suggestion
+dotnet_style_prefer_conditional_expression_over_return = true:suggestion
+dotnet_style_prefer_compound_assignment = true:warning
+dotnet_style_prefer_simplified_interpolation = true:warning
+dotnet_style_prefer_simplified_boolean_expressions = true:warning
+
+# Null-checking preferences
+# https://docs.microsoft.com/visualstudio/ide/editorconfig-language-conventions#null-checking-preferences
+dotnet_style_coalesce_expression = true:warning
+dotnet_style_null_propagation = true:warning
+dotnet_style_prefer_is_null_check_over_reference_equality_method = true:error
+
+# More style options (Undocumented)
+# https://github.com/MicrosoftDocs/visualstudio-docs/issues/3641
+dotnet_style_operator_placement_when_wrapping = end_of_line
+
+
+##########################################
+# C# Code Style Settings
+# https://docs.microsoft.com/visualstudio/ide/editorconfig-language-conventions#c-code-style-settings
+##########################################
+[*.{cs,csx,cake}]
+
+# Implicit and explicit types
+# https://docs.microsoft.com/visualstudio/ide/editorconfig-language-conventions#implicit-and-explicit-types
+csharp_style_var_for_built_in_types = true:warning
+csharp_style_var_when_type_is_apparent = true:warning
+csharp_style_var_elsewhere = true:warning
+
+# Expression-bodied members
+# https://docs.microsoft.com/visualstudio/ide/editorconfig-language-conventions#expression-bodied-members
+csharp_style_expression_bodied_methods = true:suggestion
+csharp_style_expression_bodied_constructors = false:suggestion
+csharp_style_expression_bodied_operators = true:suggestion
+csharp_style_expression_bodied_properties = true:suggestion
+csharp_style_expression_bodied_indexers = true:suggestion
+csharp_style_expression_bodied_accessors = true:suggestion
+csharp_style_expression_bodied_lambdas = true:suggestion
+csharp_style_expression_bodied_local_functions = true:suggestion
+
+# Pattern matching
+# https://docs.microsoft.com/visualstudio/ide/editorconfig-language-conventions#pattern-matching
+csharp_style_pattern_matching_over_is_with_cast_check = true:warning
+csharp_style_pattern_matching_over_as_with_null_check = true:warning
+csharp_style_prefer_switch_expression = true:warning
+csharp_style_prefer_pattern_matching = true:warning
+csharp_style_prefer_not_pattern = true:warning
+
+# Expression-level preferences
+# https://docs.microsoft.com/visualstudio/ide/editorconfig-language-conventions#expression-level-preferences
+csharp_style_inlined_variable_declaration = true:warning
+csharp_prefer_simple_default_expression = true:warning
+csharp_style_pattern_local_over_anonymous_function = true:warning
+csharp_style_deconstructed_variable_declaration = true:warning
+csharp_style_prefer_index_operator = true:warning
+csharp_style_prefer_range_operator = true:warning
+csharp_style_implicit_object_creation_when_type_is_apparent = true:warning
+
+# "Null" checking preferences
+# https://docs.microsoft.com/visualstudio/ide/editorconfig-language-conventions#c-null-checking-preferences
+csharp_style_throw_expression = true:warning
+csharp_style_conditional_delegate_call = true:warning
+
+# Code block preferences
+# https://docs.microsoft.com/visualstudio/ide/editorconfig-language-conventions#code-block-preferences
+csharp_prefer_braces = true:error
+
+# 'using' directive preferences
+# https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0065
+csharp_using_directive_placement = outside_namespace:error
+
+# Modifier preferences
+# https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/modifier-preferences#c-modifier-preferences
+csharp_prefer_static_local_function = true:suggestion
+
+##########################################
+# C# Unnecessary code rules
+# https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/unnecessary-code-rules
+##########################################
+csharp_style_unused_value_expression_statement_preference = discard_variable
+csharp_style_unused_value_assignment_preference = discard_variable:suggestion
+dotnet_code_quality_unused_parameters = all:warning
+dotnet_remove_unnecessary_suppression_exclusions = none
+
+##########################################
+# Naming rules
+# https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/naming-rules
+##########################################
+# General syntax
+# To define a naming rule, symbol group, or naming style, set one or more properties using the following syntax:
+# <kind>.<title>.<propertyName> = <propertyValue>
+# Each property should only be set once, but some settings allow multiple, comma-separated values.
+# The order of the properties is not important.
+#
+# <kind>: specifies which kind of element is being defined —naming rule, symbol group, or naming style— and must be one of the following:
+# - dotnet_naming_rule
+# - dotnet_naming_symbols
+# - dotnet_naming_style
+#
+# <title>: is a descriptive name you choose that associates multiple property
+#  settings into a single definition.
+#
+# <propertyName>:
+# symbols	The title of a symbol group; the naming rule will be applied to the symbols in this group
+# style	    The title of the naming style which should be associated with this rule
+# severity	Sets the severity with which to enforce the naming rule. Set the associated value to one of the available severity levels
+##########################################
+
+# Miscellaneous preferences
+# https://docs.microsoft.com/visualstudio/ide/editorconfig-language-conventions#miscellaneous-preferences
+csharp_prefer_simple_using_statement = true:suggestion
+
+##########################################
+# .NET Formatting Conventions
+# https://docs.microsoft.com/visualstudio/ide/editorconfig-code-style-settings-reference#formatting-conventions
+##########################################
+
+# Organize usings
+# https://docs.microsoft.com/visualstudio/ide/editorconfig-formatting-conventions#organize-using-directives
+dotnet_sort_system_directives_first = true
+
+# Newline options
+# https://docs.microsoft.com/visualstudio/ide/editorconfig-formatting-conventions#new-line-options
+csharp_new_line_before_open_brace = all
+csharp_new_line_before_else = true
+csharp_new_line_before_catch = true
+csharp_new_line_before_finally = true
+csharp_new_line_before_members_in_object_initializers = true
+csharp_new_line_before_members_in_anonymous_types = true
+csharp_new_line_between_query_expression_clauses = true
+
+# Indentation options
+# https://docs.microsoft.com/visualstudio/ide/editorconfig-formatting-conventions#indentation-options
+csharp_indent_case_contents = true
+csharp_indent_switch_labels = true
+csharp_indent_labels = no_change
+csharp_indent_block_contents = true
+csharp_indent_braces = false
+csharp_indent_case_contents_when_block = false
+
+# Spacing options
+# https://docs.microsoft.com/visualstudio/ide/editorconfig-formatting-conventions#spacing-options
+csharp_space_after_cast = false
+csharp_space_after_keywords_in_control_flow_statements = true
+csharp_space_between_parentheses = false
+csharp_space_before_colon_in_inheritance_clause = true
+csharp_space_after_colon_in_inheritance_clause = true
+csharp_space_around_binary_operators = before_and_after
+csharp_space_between_method_declaration_parameter_list_parentheses = false
+csharp_space_between_method_declaration_empty_parameter_list_parentheses = false
+csharp_space_between_method_declaration_name_and_open_parenthesis = false
+csharp_space_between_method_call_parameter_list_parentheses = false
+csharp_space_between_method_call_empty_parameter_list_parentheses = false
+csharp_space_between_method_call_name_and_opening_parenthesis = false
+csharp_space_after_comma = true
+csharp_space_before_comma = false
+csharp_space_after_dot = false
+csharp_space_before_dot = false
+csharp_space_after_semicolon_in_for_statement = true
+csharp_space_before_semicolon_in_for_statement = false
+csharp_space_around_declaration_statements = false
+csharp_space_before_open_square_brackets = false
+csharp_space_between_empty_square_brackets = false
+csharp_space_between_square_brackets = false
+
+# Wrapping options
+# https://docs.microsoft.com/visualstudio/ide/editorconfig-formatting-conventions#wrap-options
+csharp_preserve_single_line_statements = false
+csharp_preserve_single_line_blocks = true
+
+##########################################
+# .NET Naming Conventions
+# https://docs.microsoft.com/visualstudio/ide/editorconfig-naming-conventions
+##########################################
+
+[*.{cs,csx,cake,vb,vbx}]
+
+##########################################
+# Styles
+##########################################
+
+# camel_case_style - Define the camelCase style
+dotnet_naming_style.camel_case_style.capitalization = camel_case
+
+# pascal_case_style - Define the PascalCase style
+dotnet_naming_style.pascal_case_style.capitalization = pascal_case
+
+# first_upper_style - The first character must start with an upper-case character
+dotnet_naming_style.first_upper_style.capitalization = first_word_upper
+
+# prefix_interface_with_i_style - Interfaces must be PascalCase and the first character of an interface must be an 'I'
+dotnet_naming_style.prefix_interface_with_i_style.capitalization = pascal_case
+dotnet_naming_style.prefix_interface_with_i_style.required_prefix = I
+
+# prefix_type_parameters_with_t_style - Generic Type Parameters must be PascalCase and the first character must be a 'T'
+dotnet_naming_style.prefix_type_parameters_with_t_style.capitalization = pascal_case
+dotnet_naming_style.prefix_type_parameters_with_t_style.required_prefix = T
+
+# disallowed_style - Anything that has this style applied is marked as disallowed
+##dotnet_naming_style.disallowed_style.capitalization = pascal_case
+##dotnet_naming_style.disallowed_style.required_prefix = ____RULE_VIOLATION____
+##dotnet_naming_style.disallowed_style.required_suffix = ____RULE_VIOLATION____
+
+# internal_error_style - This style should never occur... if it does, it indicates a bug in file or in the parser using the file
+##dotnet_naming_style.internal_error_style.capitalization = pascal_case
+##dotnet_naming_style.internal_error_style.required_prefix = ____INTERNAL_ERROR____
+##dotnet_naming_style.internal_error_style.required_suffix = ____INTERNAL_ERROR____
+
+##########################################
+# .NET Design Guideline Field Naming Rules
+# Naming rules for fields follow the .NET Framework design guidelines
+# https://docs.microsoft.com/dotnet/standard/design-guidelines/index
+##########################################
+
+# All public/protected/protected_internal constant fields must be PascalCase
+# https://docs.microsoft.com/dotnet/standard/design-guidelines/field
+dotnet_naming_symbols.public_protected_constant_fields_group.applicable_accessibilities = public, protected, protected_internal
+dotnet_naming_symbols.public_protected_constant_fields_group.required_modifiers = const
+dotnet_naming_symbols.public_protected_constant_fields_group.applicable_kinds = field
+dotnet_naming_rule.public_protected_constant_fields_must_be_pascal_case_rule.symbols = public_protected_constant_fields_group
+dotnet_naming_rule.public_protected_constant_fields_must_be_pascal_case_rule.style = pascal_case_style
+dotnet_naming_rule.public_protected_constant_fields_must_be_pascal_case_rule.severity = warning
+
+# All public/protected/protected_internal static readonly fields must be PascalCase
+# https://docs.microsoft.com/dotnet/standard/design-guidelines/field
+dotnet_naming_symbols.public_protected_static_readonly_fields_group.applicable_accessibilities = public, protected, protected_internal
+dotnet_naming_symbols.public_protected_static_readonly_fields_group.required_modifiers = static, readonly
+dotnet_naming_symbols.public_protected_static_readonly_fields_group.applicable_kinds = field
+dotnet_naming_rule.public_protected_static_readonly_fields_must_be_pascal_case_rule.symbols = public_protected_static_readonly_fields_group
+dotnet_naming_rule.public_protected_static_readonly_fields_must_be_pascal_case_rule.style = pascal_case_style
+dotnet_naming_rule.public_protected_static_readonly_fields_must_be_pascal_case_rule.severity = warning
+
+# No other public/protected/protected_internal fields are allowed
+# https://docs.microsoft.com/dotnet/standard/design-guidelines/field
+dotnet_naming_symbols.other_public_protected_fields_group.applicable_accessibilities = public, protected, protected_internal
+dotnet_naming_symbols.other_public_protected_fields_group.applicable_kinds = field
+dotnet_naming_rule.other_public_protected_fields_disallowed_rule.symbols = other_public_protected_fields_group
+dotnet_naming_rule.other_public_protected_fields_disallowed_rule.style = disallowed_style
+dotnet_naming_rule.other_public_protected_fields_disallowed_rule.severity = error
+
+##########################################
+# StyleCop Field Naming Rules
+# Naming rules for fields follow the StyleCop analyzers
+# This does not override any rules using disallowed_style above
+# https://github.com/DotNetAnalyzers/StyleCopAnalyzers
+##########################################
+
+# All constant fields must be PascalCase
+# https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1303.md
+dotnet_naming_symbols.stylecop_constant_fields_group.applicable_accessibilities = public, internal, protected_internal, protected, private_protected, private
+dotnet_naming_symbols.stylecop_constant_fields_group.required_modifiers = const
+dotnet_naming_symbols.stylecop_constant_fields_group.applicable_kinds = field
+dotnet_naming_rule.stylecop_constant_fields_must_be_pascal_case_rule.symbols = stylecop_constant_fields_group
+dotnet_naming_rule.stylecop_constant_fields_must_be_pascal_case_rule.style = pascal_case_style
+dotnet_naming_rule.stylecop_constant_fields_must_be_pascal_case_rule.severity = warning
+
+# All static readonly fields must be PascalCase
+# https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1311.md
+dotnet_naming_symbols.stylecop_static_readonly_fields_group.applicable_accessibilities = public, internal, protected_internal, protected, private_protected, private
+dotnet_naming_symbols.stylecop_static_readonly_fields_group.required_modifiers = static, readonly
+dotnet_naming_symbols.stylecop_static_readonly_fields_group.applicable_kinds = field
+dotnet_naming_rule.stylecop_static_readonly_fields_must_be_pascal_case_rule.symbols = stylecop_static_readonly_fields_group
+dotnet_naming_rule.stylecop_static_readonly_fields_must_be_pascal_case_rule.style = pascal_case_style
+dotnet_naming_rule.stylecop_static_readonly_fields_must_be_pascal_case_rule.severity = warning
+
+# No non-private instance fields are allowed
+# https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1401.md
+dotnet_naming_symbols.stylecop_fields_must_be_private_group.applicable_accessibilities = public, internal, protected_internal, protected, private_protected
+dotnet_naming_symbols.stylecop_fields_must_be_private_group.applicable_kinds = field
+dotnet_naming_rule.stylecop_instance_fields_must_be_private_rule.symbols = stylecop_fields_must_be_private_group
+dotnet_naming_rule.stylecop_instance_fields_must_be_private_rule.style = disallowed_style
+dotnet_naming_rule.stylecop_instance_fields_must_be_private_rule.severity = error
+
+# Private fields must be camelCase
+# https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1306.md
+##dotnet_naming_symbols.stylecop_private_fields_group.applicable_accessibilities = private
+##dotnet_naming_symbols.stylecop_private_fields_group.applicable_kinds = field
+##dotnet_naming_rule.stylecop_private_fields_must_be_camel_case_rule.symbols = stylecop_private_fields_group
+##dotnet_naming_rule.stylecop_private_fields_must_be_camel_case_rule.style = camel_case_style
+##dotnet_naming_rule.stylecop_private_fields_must_be_camel_case_rule.severity = warning
+## https://stackoverflow.com/questions/45736659/how-do-i-customize-visual-studios-private-field-generation-shortcut-for-constru/49428349#49428349
+dotnet_naming_rule.private_members_with_underscore.symbols = private_fields
+dotnet_naming_rule.private_members_with_underscore.style = prefix_underscore
+dotnet_naming_rule.private_members_with_underscore.severity = warning
+dotnet_naming_symbols.private_fields.applicable_kinds = field
+dotnet_naming_symbols.private_fields.applicable_accessibilities = private
+dotnet_naming_style.prefix_underscore.capitalization = camel_case
+dotnet_naming_style.prefix_underscore.required_prefix = _
+
+# Local variables must be camelCase
+# https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1312.md
+dotnet_naming_symbols.stylecop_local_fields_group.applicable_accessibilities = local
+dotnet_naming_symbols.stylecop_local_fields_group.applicable_kinds = local
+dotnet_naming_rule.stylecop_local_fields_must_be_camel_case_rule.symbols = stylecop_local_fields_group
+dotnet_naming_rule.stylecop_local_fields_must_be_camel_case_rule.style = camel_case_style
+dotnet_naming_rule.stylecop_local_fields_must_be_camel_case_rule.severity = silent
+
+# This rule should never fire.  However, it's included for at least two purposes:
+# First, it helps to understand, reason about, and root-case certain types of issues, such as bugs in .editorconfig parsers.
+# Second, it helps to raise immediate awareness if a new field type is added (as occurred recently in C#).
+dotnet_naming_symbols.sanity_check_uncovered_field_case_group.applicable_accessibilities = *
+dotnet_naming_symbols.sanity_check_uncovered_field_case_group.applicable_kinds = field
+dotnet_naming_rule.sanity_check_uncovered_field_case_rule.symbols = sanity_check_uncovered_field_case_group
+dotnet_naming_rule.sanity_check_uncovered_field_case_rule.style = internal_error_style
+dotnet_naming_rule.sanity_check_uncovered_field_case_rule.severity = error
+
+##########################################
+# Other Naming Rules
+##########################################
+
+# All of the following must be PascalCase:
+# - Namespaces
+#   https://docs.microsoft.com/dotnet/standard/design-guidelines/names-of-namespaces
+#   https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1300.md
+# - Classes and Enumerations
+#   https://docs.microsoft.com/dotnet/standard/design-guidelines/names-of-classes-structs-and-interfaces
+#   https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1300.md
+# - Delegates
+#   https://docs.microsoft.com/dotnet/standard/design-guidelines/names-of-classes-structs-and-interfaces#names-of-common-types
+# - Constructors, Properties, Events, Methods
+#   https://docs.microsoft.com/dotnet/standard/design-guidelines/names-of-type-members
+dotnet_naming_symbols.element_group.applicable_kinds = namespace, class, enum, struct, delegate, event, method, property
+dotnet_naming_rule.element_rule.symbols = element_group
+dotnet_naming_rule.element_rule.style = pascal_case_style
+dotnet_naming_rule.element_rule.severity = warning
+
+# Interfaces use PascalCase and are prefixed with uppercase 'I'
+# https://docs.microsoft.com/dotnet/standard/design-guidelines/names-of-classes-structs-and-interfaces
+dotnet_naming_symbols.interface_group.applicable_kinds = interface
+dotnet_naming_rule.interface_rule.symbols = interface_group
+dotnet_naming_rule.interface_rule.style = prefix_interface_with_i_style
+dotnet_naming_rule.interface_rule.severity = warning
+
+# Generics Type Parameters use PascalCase and are prefixed with uppercase 'T'
+# https://docs.microsoft.com/dotnet/standard/design-guidelines/names-of-classes-structs-and-interfaces
+dotnet_naming_symbols.type_parameter_group.applicable_kinds = type_parameter
+dotnet_naming_rule.type_parameter_rule.symbols = type_parameter_group
+dotnet_naming_rule.type_parameter_rule.style = prefix_type_parameters_with_t_style
+dotnet_naming_rule.type_parameter_rule.severity = warning
+
+# Function parameters use camelCase
+# https://docs.microsoft.com/dotnet/standard/design-guidelines/naming-parameters
+dotnet_naming_symbols.parameters_group.applicable_kinds = parameter
+dotnet_naming_rule.parameters_rule.symbols = parameters_group
+dotnet_naming_rule.parameters_rule.style = camel_case_style
+dotnet_naming_rule.parameters_rule.severity = warning
+
+###################################################################################################
+# CA (Code quality analysis)
+###################################################################################################
+# CA1002: Do not expose generic lists.
+dotnet_diagnostic.CA1002.severity = suggestion
+
+# CA1016: Mark assemblies with AssemblyVersionAttribute.
+dotnet_diagnostic.CA1016.severity = none
+
+# CA1031: Do not catch general exception types.
+dotnet_diagnostic.CA1031.severity = none
+
+# CA1041: Provide ObsoleteAttribute message.
+dotnet_diagnostic.CA1041.severity = suggestion
+
+# CA1062: Validate arguments of public methods.
+# An externally visible method dereferences one of its reference arguments without verifying whether that argument is null
+dotnet_code_quality.CA1062.null_check_validation_methods = Validate
+
+# CA1068: CancellationToken parameters must come last.
+dotnet_diagnostic.CA1068.severity = error
+
+# CA1707: Identifiers should not contain underscores.
+dotnet_diagnostic.CA1707.severity = suggestion
+
+# CA1716: Identifiers should not match keywords.
+dotnet_diagnostic.CA1716.severity = suggestion
+
+# CA1806: Do not ignore method results.
+dotnet_diagnostic.CA1806.severity = suggestion
+
+# CA1816 Call GC.SuppressFinalize correctly.
+dotnet_diagnostic.CA1816.severity = suggestion
+
+# CA1819: Properties should not return arrays.
+# This should be an error, but due to historical reasons, this is an suggestion.
+dotnet_diagnostic.CA1819.severity = suggestion
+
+# CA1822: Mark members as static.
+dotnet_diagnostic.CA1822.severity = suggestion
+
+# CA1824: Mark assemblies with NeutralResourcesLanguageAttribute.
+dotnet_diagnostic.CA1824.severity = none
+
+# CA1825: Avoid unnecessary zero-length array allocations.  Use Array.Empty<object>() instead.
+dotnet_diagnostic.CA1825.severity = error
+
+# CA1826: Use property instead of Linq Enumerable method.
+dotnet_diagnostic.CA1826.severity = error
+
+# CA1829: Use Length/Count property instead of Enumerable.Count method.
+dotnet_diagnostic.CA1829.severity = error
+
+# CA1854: Prefer the IDictionary.TryGetValue(TKey, out TValue) method.
+dotnet_diagnostic.CA1854.severity = suggestion
+
+# CA2225: Operator overloads have named alternates.
+dotnet_diagnostic.CA2225.severity = none
+
+###################################################################################################
+# CS
+###################################################################################################
+
+# CS0108: 'member' hides inherited member 'member'. Use the new keyword if hiding was intended.
+dotnet_diagnostic.CS0108.severity = error
+
+# CS1572: XML comment has a param tag, but there is no parameter by that name
+dotnet_diagnostic.CS1572.severity = error
+
+# CS1717: Assignment made to same variable; did you mean to assign something else?
+dotnet_diagnostic.CS1717.severity = error
+
+# CS1998: This async method lacks 'await' operators and will run synchronously. Consider using the 'await' operator to await non-blocking API calls, or 'await Task.Run(...)' to do CPU-bound work on a background thread.
+dotnet_diagnostic.CS1998.severity = error
+
+# CS4014: Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the await operator to the result of the call.
+dotnet_diagnostic.CS14014.severity = error
+
+# CS8601: Possible null reference assignment.
+dotnet_diagnostic.CS8601.severity = error
+
+# CS8602: Dereference of a possibly null reference.
+dotnet_diagnostic.CS8602.severity = error
+
+# CS8603: Possible null reference return.
+dotnet_diagnostic.CS8603.severity = error
+
+# CS8604: Possible null reference argument for parameter 'x' in 'y'.
+dotnet_diagnostic.CS8604.severity = error
+
+# CS8618: Non-Nullable fields must contain a non-null value when exiting the constructor. Consider declaring as nullable.
+dotnet_diagnostic.CS8618.severity = error
+
+# CS8625: Cannot convert null literal to non-nullable reference type.
+dotnet_diagnostic.CS8625.severity = error
+
+# CS8629: Nullable value type may be null.
+dotnet_diagnostic.CS8629.severity = error
+
+###################################################################################################
+# SA (StyleCop.Analyzers)
+###################################################################################################
+
+# SA0001: XML comment analysis is disabled due to project configuration or out of date NuGet packages.
+# Skip this rule because it is not useful for us right now.
+dotnet_diagnostic.SA0001.severity = none
+
+# SA1000:The keyword 'new' should be followed by a space.
+dotnet_diagnostic.SA1000.severity = none
+
+# SA1001: Comma should be followed by space.
+dotnet_diagnostic.SA1001.severity = error
+
+# SA1005: Single line comments should begin with single space.
+dotnet_diagnostic.SA1005.severity = error
+
+# SA1010: Opening square bracket should be followed by a space.
+dotnet_diagnostic.SA1010.severity = none
+
+# SA1011: Closing square bracket should be followed by a space.
+dotnet_diagnostic.SA1011.severity = none
+
+# SA1100: Do not prefix calls with base unless local implementation exists.
+dotnet_diagnostic.SA1100.severity = error
+
+# SA1101: Prefix local calls with this.
+dotnet_diagnostic.SA1101.severity = none
+
+# SA1111: Closing parenthesis should be on line of last parameter.
+dotnet_diagnostic.SA1111.severity = error
+
+# SA1114: Parameter list should follow declaration.
+dotnet_diagnostic.SA1114.severity = error
+
+# SA1115: Parameter should follow comma.
+dotnet_diagnostic.SA1115.severity = error
+
+# SA1116: Split parameters should start on line after declaration.
+dotnet_diagnostic.SA1116.severity = suggestion
+
+# SA1117: Parameters should be on same line or separate lines.
+dotnet_diagnostic.SA1117.severity = suggestion
+
+# SA1121: Use built-in type alias.
+dotnet_diagnostic.SA1121.severity = error
+
+# SA1122: Use string.Empty for empty strings.
+dotnet_diagnostic.SA1122.severity = none
+
+# SA1123: Do not place regions within elements.
+dotnet_diagnostic.SA1123.severity = error
+
+# SA1124: Do not use regions.
+dotnet_diagnostic.SA1124.severity = error
+
+# SA1125: Use shorthand for nullable types.
+dotnet_diagnostic.SA1125.severity = error
+
+# SA1127: Generic type constraints should be on their own line.
+dotnet_diagnostic.SA1127.severity = error
+
+# SA1128: Put constructor initializers on their own line.
+dotnet_diagnostic.SA1128.severity = error
+
+# SA1129: Do not use default value type constructor.
+dotnet_diagnostic.SA1129.severity = error
+
+# SA1130: Use lambda syntax.
+dotnet_diagnostic.SA1130.severity = error
+
+# SA1131: Use readable conditions.
+dotnet_diagnostic.SA1131.severity = error
+
+# SA1132: Do not combine fields.
+dotnet_diagnostic.SA1132.severity = error
+
+# SA1133: Do not combine attributes.
+dotnet_diagnostic.SA1133.severity = error
+
+# SA1139: Use literal suffix notation instead of casting.
+dotnet_diagnostic.SA1139.severity = error
+
+# SA1200: Using directives should be placed correctly.
+dotnet_diagnostic.SA1200.severity = none
+
+# SA1201: Elements should appear in the correct order.
+dotnet_diagnostic.SA1201.severity = error
+
+# SA1202: Elements should be ordered by access.
+dotnet_diagnostic.SA1202.severity = error
+
+# SA1203: Constants should appear before fields.
+dotnet_diagnostic.SA1203.severity = error
+
+# SA1204: Static elements should appear before instance elements.
+dotnet_diagnostic.SA1204.severity = error
+
+# SA1309: Field names should not begin with underscore.
+dotnet_diagnostic.SA1309.severity = none
+
+# SA1316: Tuple element names should use correct casing.
+dotnet_diagnostic.SA1316.severity = error
+
+# SA1402: File may only contain a single type.
+dotnet_diagnostic.SA1402.severity = none
+
+# SA1413: Use trailing comma in multi-line initializers.
+dotnet_diagnostic.SA1413.severity = none
+
+# SA1507: Code should not contain multiple blank lines in a row.
+dotnet_diagnostic.SA1507.severity = error
+
+# SA1512: Single-line comments should not be followed by blank line.
+dotnet_diagnostic.SA1512.severity = none
+
+# SA1513: Closing brace should be followed by blank line.
+dotnet_diagnostic.SA1513.severity = suggestion
+
+# SA1515: Single-line comment should be preceded by blank line.
+dotnet_diagnostic.SA1515.severity = none
+
+# SA1516: Elements should be separated by blank line.
+dotnet_diagnostic.SA1516.severity = none
+
+# SA1517: Code should not contain blank lines at start of file.
+dotnet_diagnostic.SA1517.severity = error
+
+# SA1518: Code should not contain blank lines at end of file.
+dotnet_diagnostic.SA1518.severity = error
+
+# SA1600: Elements should be documented.
+dotnet_diagnostic.SA1600.severity = none
+
+# SA1601: Partial elements should be documented.
+dotnet_diagnostic.SA1601.severity = none
+
+# SA1602: Enumeration items should be documented.
+# Should be error, but we have too many violations.
+dotnet_diagnostic.SA1602.severity = none
+
+# SA1604: Element documentation should have summary.
+dotnet_diagnostic.SA1604.severity = error
+
+# SA1610: Generic type parameters should be documented.
+dotnet_diagnostic.SA1610.severity = error
+
+# SA1611: Element parameters should be documented.
+# Should be error, but we have too many violations.
+dotnet_diagnostic.SA1611.severity = none
+
+# SA1612: Element return value should be documented.
+dotnet_diagnostic.SA1612.severity = none
+
+# SA1614: Element parameter documentation must have text.
+dotnet_diagnostic.SA1614.severity = none
+
+# SA1615: Element return value documentation must have text.
+dotnet_diagnostic.SA1615.severity = none
+
+# SA1617: Void return value should not be documented.
+dotnet_diagnostic.SA1617.severity = error
+
+# SA1618: Generic type parameters should be documented partial class.
+dotnet_diagnostic.SA1618.severity = none
+
+# SA1622: Return type should be documented.
+dotnet_diagnostic.SA1622.severity = none
+
+# SA1623: Property summary documentation should match accessors.
+dotnet_diagnostic.SA1623.severity = none
+
+# SA1629: Documentation text should end with a period.
+dotnet_diagnostic.SA1629.severity = none
+
+# SA1633: File should have header.
+dotnet_diagnostic.SA1633.severity = none
+
+# SA1642: Constructor summary documentation should begin with standard text.
+dotnet_diagnostic.SA1642.severity = error
+
+# SA1649: File name should match first type name.
+dotnet_diagnostic.SA1649.severity = error
+
+###################################################################################################
+# IDE
+###################################################################################################
+
+# IDE0005: Remove unnecessary using directives.
+dotnet_diagnostic.IDE0005.severity = error
+
+# IDE0010: Add missing cases to switch statement.
+dotnet_diagnostic.IDE0010.severity = suggestion
+
+# IDE0044: Add readonly modifier
+dotnet_diagnostic.IDE0044.severity = error
+
+# IDE0046: 'if' statement can be simplified
+dotnet_diagnostic.IDE0046.severity = none
+
+# IDE0055: Fix formatting.
+dotnet_diagnostic.IDE0055.severity = error
+
+# IDE0058: Remove unnecessary expression value.
+dotnet_diagnostic.IDE0058.severity = none
+
+# IDE0060: Remove unused parameter.
+dotnet_diagnostic.IDE0060.severity = none
+
+# IDE0160: Convert to block scoped namespaces.
+dotnet_diagnostic.IDE0160.severity = none
+
+# IDE1006: Add missing cases to switch statement.
+dotnet_diagnostic.IDE1006.severity = error
+tab_width = 4
+end_of_line = crlf
+dotnet_style_namespace_match_folder = true:suggestion
+
+###################################################################################################
+# Entity Framework Migrations exceptions
+###################################################################################################
+
+[**/Migrations/*.cs]
+
+# IDE0005: Using directive is unnecessary.
+dotnet_diagnostic.IDE0005.severity = none
+
+# IDE0055: Fix formatting.
+dotnet_diagnostic.IDE0055.severity = none
+
+# IDE0161: Convert to file-scoped namespaces.
+dotnet_diagnostic.IDE0161.severity = none
+
+# IDE1006: Naming rule violation.
+dotnet_diagnostic.IDE1006.severity = none
+
+# SA1028: Code should not contain trailing whitespace.
+dotnet_diagnostic.SA1028.severity = none
+
+# SA1505: An opening brace should not be followed by a blank line.
+dotnet_diagnostic.SA1505.severity = none
+
+# SA1508: A closing brace should not be preceded by a blank line.
+dotnet_diagnostic.SA1508.severity = none
+
+# CHARSET: Fix file encoding.
+dotnet_diagnostic.CHARSET.severity = none
