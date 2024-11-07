@@ -1,28 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using TimesheetApp.Domain.Models.Enums;
 using TimesheetApp.Domain.Models.ValueObjects;
 
-namespace TimesheetApp.Domain.Models
+namespace TimesheetApp.Domain.Models;
+
+public class Registration
 {
-    public class Registration
+    public Registration(RegistrationType registrationType, TimeSlot timeSlot)
     {
-        public Registration() { }
-        public Registration(string registrationType, TimeSlot timeSlot)
-        {
-            RegistrationType = registrationType;
-            TimeSlot = timeSlot;
-        }
+        RegistrationType = registrationType;
+        TimeSlot = timeSlot;
+    }
 
-        public int Id { get; private set; }
-        public string RegistrationType { get; private set; }
-        public TimeSlot TimeSlot { get; private set; }
+    private Registration()
+    {
+    }
 
-        public void ChangeTimeSlot(TimeSlot timeSlot)
-        {
-            TimeSlot = timeSlot;
-        }
+    public int Id { get; internal set; }
+    public RegistrationType RegistrationType { get; private set; }
+    public TimeSlot TimeSlot { get; private set; } = default!;
+
+    public void ChangeTimeSlot(TimeSlot timeSlot)
+    {
+        TimeSlot = timeSlot;
+    }
+
+    public void UpdateRegistration(RegistrationType registrationType, TimeSlot timeSlot)
+    {
+        RegistrationType = registrationType;
+        ChangeTimeSlot(timeSlot);
     }
 }

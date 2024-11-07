@@ -1,25 +1,21 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TimesheetApp.Domain.Models;
-using System.ComponentModel.DataAnnotations;
+using TimesheetApp.Domain.Models.ValueObjects;
 
-namespace TimesheetApp.Infrastructure.Config
+namespace TimesheetApp.Infrastructure.Config;
+
+public class RegistrationConfiguration : IEntityTypeConfiguration<Registration>
 {
-    public class RegistrationConfiguration : IEntityTypeConfiguration<Registration>
+    public void Configure(EntityTypeBuilder<Registration> modelBuilder)
     {
-        public void Configure(EntityTypeBuilder<Registration> modelBuilder)
+        modelBuilder.ToTable(nameof(Registration));
+        modelBuilder.Property(r => r.RegistrationType)
+            .HasConversion<string>();
+        modelBuilder.OwnsOne(r => r.TimeSlot, ts =>
         {
-            modelBuilder.ToTable("Registration");
-
-            modelBuilder.OwnsOne(r => r.TimeSlot)
-                    .Property(t => t.Start).HasColumnName("Start");
-            modelBuilder.OwnsOne(r => r.TimeSlot)
-                    .Property(t => t.End).HasColumnName("End");
-        }
+            ts.Property(t => t.Start).HasColumnName(nameof(TimeSlot.Start));
+            ts.Property(t => t.End).HasColumnName(nameof(TimeSlot.End));
+        });
     }
 }

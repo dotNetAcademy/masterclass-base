@@ -1,31 +1,53 @@
-﻿using CSharpFunctionalExtensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CSharpFunctionalExtensions;
 using TimesheetApp.Domain.Exceptions;
 
-namespace TimesheetApp.Domain.Models.ValueObjects
+namespace TimesheetApp.Domain.Models.ValueObjects;
+
+public class TimeSlot : ValueObject
 {
-    public class TimeSlot : ValueObject
+    public TimeSlot()
     {
-        public TimeSlot() { }
+    }
 
-        public TimeSlot(DateTime start, DateTime end)
+    public TimeSlot(DateTime start, DateTime end)
+    {
+        if (start > end)
         {
-            if (start > end) { throw new AppException("Start moment has to be earlier than end moment."); }
-            Start = start;
-            End = end;
+            throw new AppException("Start moment has to be earlier than end moment.");
         }
-
-        public DateTime Start { get; private set; }
-        public DateTime End { get; private set; }
-
-        protected override IEnumerable<IComparable> GetEqualityComponents()
+        if ((end - start).TotalHours - 0.5 > 8)
         {
-            yield return Start;
-            yield return End;
+            throw new AppException("This timeslot exceeds the maximum of 8 hours");
         }
+        if (start.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday)
+        {
+            throw new AppException("Registration has to be on a weekday");
+        }
+        Start = start;
+        End = end;
+    }
+
+    public DateTime Start { get; private set; }
+    public DateTime End { get; private set; }
+
+    public double TotalHours
+    {
+        get
+        {
+            return (End - Start).TotalHours - 0.5;
+        }
+    }
+
+    public void IsOverlapping(TimeSlot other)
+    {
+        if ((Start >= other.Start && Start <= other.End) || (End >= other.Start && End <= other.End))
+        {
+            throw new AppException("There is an overlap with another registration");
+        }
+    }
+    protected override IEnumerable<IComparable> GetEqualityComponents()
+    {
+        yield return Start;
+        yield return End;
     }
 }

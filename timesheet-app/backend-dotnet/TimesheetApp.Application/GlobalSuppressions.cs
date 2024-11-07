@@ -1,0 +1,37 @@
+// This file is used by Code Analysis to maintain SuppressMessage
+// attributes that are applied to this project.
+// Project-level suppressions either have no target or are given
+// a specific target and scoped to a namespace, type, member, etc.
+
+using System.Diagnostics.CodeAnalysis;
+
+[assembly: SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "<Pending>", Scope = "type", Target = "~T:TimesheetApp.Application.Commands.Holidays.AddHolidayCommand")]
+[assembly: SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "<Pending>", Scope = "type", Target = "~T:TimesheetApp.Application.Commands.Registrations.AddRegistrationCommand")]
+[assembly: SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1009:Closing parenthesis should be spaced correctly", Justification = "<Pending>", Scope = "type", Target = "~T:TimesheetApp.Application.Commands.Holidays.AddHolidayCommand")]
+[assembly: SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1009:Closing parenthesis should be spaced correctly", Justification = "<Pending>", Scope = "type", Target = "~T:TimesheetApp.Application.Commands.Registrations.AddRegistrationCommand")]
+[assembly: SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1009:Closing parenthesis should be spaced correctly", Justification = "<Pending>", Scope = "type", Target = "~T:TimesheetApp.Application.Commands.Timesheets.SubmitTimesheetCommand")]
+[assembly: SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "<Pending>", Scope = "type", Target = "~T:TimesheetApp.Application.Commands.Timesheets.SubmitTimesheetCommand")]
+[assembly: SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "<Pending>", Scope = "type", Target = "~T:TimesheetApp.Application.Queries.Holidays.GetHolidaysByDateQuery")]
+[assembly: SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1009:Closing parenthesis should be spaced correctly", Justification = "<Pending>", Scope = "type", Target = "~T:TimesheetApp.Application.Queries.Holidays.GetHolidaysByDateQuery")]
+[assembly: SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1404:Code analysis suppression should have justification", Justification = "<Pending>")]
+[assembly: SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "<Pending>", Scope = "type", Target = "~T:TimesheetApp.Application.Commands.Timesheets.ApproveTimesheetCommand")]
+[assembly: SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1009:Closing parenthesis should be spaced correctly", Justification = "<Pending>", Scope = "type", Target = "~T:TimesheetApp.Application.Commands.Timesheets.ApproveTimesheetCommand")]
+[assembly: SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "<Pending>", Scope = "type", Target = "~T:TimesheetApp.Application.Queries.Employees.GetEmployeesByNameQuery")]
+[assembly: SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1009:Closing parenthesis should be spaced correctly", Justification = "<Pending>", Scope = "type", Target = "~T:TimesheetApp.Application.Queries.Holidays.GetAllHolidaysQuery")]
+[assembly: SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1009:Closing parenthesis should be spaced correctly", Justification = "<Pending>", Scope = "type", Target = "~T:TimesheetApp.Application.Queries.Employees.GetEmployeesByNameQuery")]
+[assembly: SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "<Pending>", Scope = "type", Target = "~T:TimesheetApp.Application.Queries.Registrations.GetRegistrationsByDateAndEmployeeQuery")]
+[assembly: SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1009:Closing parenthesis should be spaced correctly", Justification = "<Pending>", Scope = "type", Target = "~T:TimesheetApp.Application.Queries.Registrations.GetRegistrationsByDateAndEmployeeQuery")]
+[assembly: SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "<Pending>", Scope = "type", Target = "~T:TimesheetApp.Application.Queries.Timesheets.GetTimesheetsByEmployeeIdQuery")]
+[assembly: SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1009:Closing parenthesis should be spaced correctly", Justification = "<Pending>", Scope = "type", Target = "~T:TimesheetApp.Application.Queries.Timesheets.GetTimesheetsByEmployeeIdQuery")]
+[assembly: SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "<Pending>", Scope = "type", Target = "~T:TimesheetApp.Application.Commands.Registrations.EditRegistrationCommand")]
+[assembly: SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1009:Closing parenthesis should be spaced correctly", Justification = "<Pending>", Scope = "type", Target = "~T:TimesheetApp.Application.Commands.Registrations.EditRegistrationCommand")]
+[assembly: SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "<Pending>", Scope = "type", Target = "~T:TimesheetApp.Application.Queries.Employees.GetEmployeeByIdQuery")]
+[assembly: SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1009:Closing parenthesis should be spaced correctly", Justification = "<Pending>", Scope = "type", Target = "~T:TimesheetApp.Application.Queries.Employees.GetEmployeeByIdQuery")]
+[assembly: SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1009:Closing parenthesis should be spaced correctly", Justification = "<Pending>", Scope = "type", Target = "~T:TimesheetApp.Application.Queries.Registrations.GetRegistrationsQuery")]
+[assembly: SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1009:Closing parenthesis should be spaced correctly", Justification = "<Pending>", Scope = "type", Target = "~T:TimesheetApp.Application.Queries.Employees.GetEmployeesQuery")]
+[assembly: SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "<Pending>", Scope = "type", Target = "~T:TimesheetApp.Application.DomainEvents.TimesheetStateChangedDomainEvent")]
+[assembly: SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1206:Declaration keywords should follow order", Justification = "<Pending>", Scope = "member", Target = "~P:TimesheetApp.Application.DTOs.AddRegistrationDTO.RegistrationType")]
+[assembly: SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1206:Declaration keywords should follow order", Justification = "<Pending>", Scope = "member", Target = "~P:TimesheetApp.Application.DTOs.EmployeeDTO.Name")]
+[assembly: SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1206:Declaration keywords should follow order", Justification = "<Pending>", Scope = "member", Target = "~P:TimesheetApp.Application.DTOs.AddRegistrationDTO.Auth0Id")]
+[assembly: SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1206:Declaration keywords should follow order", Justification = "<Pending>", Scope = "member", Target = "~P:TimesheetApp.Application.DTOs.HolidayDTO.Name")]
+[assembly: SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1206:Declaration keywords should follow order", Justification = "<Pending>", Scope = "member", Target = "~P:TimesheetApp.Application.DTOs.RegistrationDTO.RegistrationType")]

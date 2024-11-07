@@ -1,21 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TimesheetApp.Domain.Models;
 
-namespace TimesheetApp.Infrastructure.Config
+namespace TimesheetApp.Infrastructure.Config;
+
+public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
 {
-    public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
+    public void Configure(EntityTypeBuilder<Employee> modelBuilder)
     {
-        public void Configure(EntityTypeBuilder<Employee> modelBuilder)
-        {
-            modelBuilder.ToTable("Employee")
-                .HasMany(e => e.Timesheets)
-                .WithOne();
-        }
+        modelBuilder.Property(e => e.Role)
+            .HasConversion<string>();
+
+        modelBuilder.ToTable("Employee")
+            .HasMany(e => e.Timesheets)
+            .WithOne();
     }
 }

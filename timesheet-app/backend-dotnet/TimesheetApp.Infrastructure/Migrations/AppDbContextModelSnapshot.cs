@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using PronostiekApp.Infrastructure;
+using TimesheetApp.Infrastructure;
 
 #nullable disable
 
@@ -17,7 +17,7 @@ namespace TimesheetApp.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.4")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -26,6 +26,9 @@ namespace TimesheetApp.Infrastructure.Migrations
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Auth0Id")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -48,6 +51,26 @@ namespace TimesheetApp.Infrastructure.Migrations
                     b.ToTable("Employee", (string)null);
                 });
 
+            modelBuilder.Entity("TimesheetApp.Domain.Models.Holiday", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Holidays");
+                });
+
             modelBuilder.Entity("TimesheetApp.Domain.Models.Registration", b =>
                 {
                     b.Property<int>("Id")
@@ -56,15 +79,9 @@ namespace TimesheetApp.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("End")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("RegistrationType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Start")
-                        .HasColumnType("datetime2");
 
                     b.Property<int?>("TimesheetId")
                         .HasColumnType("int");
@@ -87,6 +104,12 @@ namespace TimesheetApp.Infrastructure.Migrations
                     b.Property<string>("EmployeeId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSubmitted")
+                        .HasColumnType("bit");
+
                     b.Property<int>("Month")
                         .HasColumnType("int");
 
@@ -105,6 +128,30 @@ namespace TimesheetApp.Infrastructure.Migrations
                     b.HasOne("TimesheetApp.Domain.Models.Timesheet", null)
                         .WithMany("Registrations")
                         .HasForeignKey("TimesheetId");
+
+                    b.OwnsOne("TimesheetApp.Domain.Models.ValueObjects.TimeSlot", "TimeSlot", b1 =>
+                        {
+                            b1.Property<int>("RegistrationId")
+                                .HasColumnType("int");
+
+                            b1.Property<DateTime>("End")
+                                .HasColumnType("datetime2")
+                                .HasColumnName("End");
+
+                            b1.Property<DateTime>("Start")
+                                .HasColumnType("datetime2")
+                                .HasColumnName("Start");
+
+                            b1.HasKey("RegistrationId");
+
+                            b1.ToTable("Registration");
+
+                            b1.WithOwner()
+                                .HasForeignKey("RegistrationId");
+                        });
+
+                    b.Navigation("TimeSlot")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("TimesheetApp.Domain.Models.Timesheet", b =>
