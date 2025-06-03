@@ -6,7 +6,8 @@
 2. download en installeer eerst https://cli.github.com/
 3. Voer dit Script uit:
 
-´´´
+```
+
 $sourcerepo = "dotNetAcademy/masterclass-base"
 $targetrepo = "<<TODO>> JE EIGEN FORK"
 
@@ -39,7 +40,8 @@ foreach ($issue in $issues) {
 }
  
 
-´´´
+```
+
 
 Om ervoor te zorgen dat code die je schrijft gelinkt kan worden aan een specifieke taak is het belangrijk dat je hier een bepaalde workflow bij volgt namelijk:
 - Vanaf je een nieuwe taak opneemt moet je in je repository een nieuwe branch aanmaken (**aftakken van de main branch**), de naam van deze branch moet hetzelfde zijn als de issue key (bijvoorbeeld `MASTER-10`)
